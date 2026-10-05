@@ -34,7 +34,7 @@ TROUS = [(7.5, 3.25), (65.5, 3.25), (7.5, 52.25), (65.5, 52.25)]
 
 # Côté USB/RJ45 (X = 89) : 51,2 mm de l'extérieur de la 1re USB à l'extérieur du RJ45,
 # hauteur max 16,5 au-dessus de la carte (rebord compris), dépassement 2,8.
-USB_Y0 = 2.25           # A MESURER : distance du bord 40 broches à la 1re prise USB
+USB_Y0 = 2.5            # distance du bord 40 broches à la 1re prise USB (mesuré)
 USB_SPAN = 51.2
 USB_H = 16.5
 USB_REBORD = 0.8
@@ -52,12 +52,12 @@ PRISES_Y = [
 SD_Y0, SD_Y1 = 7.8, 18.9
 SD_SOUS = 1.5
 
-# Bouton POWER (petit côté sans USB) : rond Ø 2,1, extérieur à 48,8 du bord 40 broches,
-# dépasse de 0,2 mm du bord.
-PWR_Y = 48.8 - 2.1 / 2  # centre
-PWR_D = 2.1
+# Bouton POWER (petit côté sans USB) : rond Ø 2,1 à 2,2, extérieur à 48,8 du bord 40 broches,
+# dépasse de 0,2 mm du bord, sommet à 4,8 mm du dessous de la carte.
+PWR_D = 2.2
+PWR_Y = 48.8 - PWR_D / 2  # centre
 PWR_DEPASSE = 0.2
-PWR_Z = CARTE_EP + 1.0  # A MESURER : hauteur du centre du bouton
+PWR_Z = 4.8 - PWR_D / 2  # centre du bouton (sommet mesuré à 4,8 du dessous de la carte)
 
 # Microphone : Ø 5,1, angle petit côté sans USB / côté HDMI, dépasse de 0,3 des deux bords.
 MIC_D = 5.1
@@ -80,7 +80,7 @@ AIR_SOUS_SSD = 3.0      # espace sous le SSD
 FOND_EXT = 2.0          # double fond : plaque extérieure (trou de serrure)
 FOND_CAVITE = 3.5       #               logement de la tête de vis
 FOND_INT = 1.6          #               plancher intérieur
-SPLIT = CARTE_EP + 3.0  # plan de joint socle / capot (au-dessus de la carte)
+SPLIT = CARTE_EP + 5.0  # plan de joint socle / capot (au-dessus de la carte et du bouton POWER)
 PLAFOND = 2.0           # épaisseur du dessus du capot
 PLOT_D = 6.0            # plots de la carte (vis M2,5)
 PLOT_AVANT_TROU = 2.2   # avant-trou pour vis M2,5 auto-taraudeuse dans le PLA

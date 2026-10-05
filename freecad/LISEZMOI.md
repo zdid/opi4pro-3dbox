@@ -1,6 +1,6 @@
 # Boîtier Orange Pi 4 Pro — fichiers FreeCAD
 
-Première version (v1) construite à partir de `CAHIER_DES_CHARGES.md` (v0.39).
+Première version (v1) construite à partir de `CAHIER_DES_CHARGES.md` (v0.40).
 
 | Fichier | Rôle |
 |---|---|
@@ -37,7 +37,5 @@ Dimensions hors tout : 105 × 74 × 45 mm, bossages d'angle compris.
 
 | Paramètre | Valeur supposée | Quoi mesurer |
 |---|---|---|
-| `USB_Y0` | 2,25 mm | Distance entre le bord 40 broches de la carte et le bord extérieur de la première prise USB |
-| `PWR_Z` | 1 mm au-dessus de la carte | Hauteur du centre du bouton POWER |
 | `TROUS` | centres à 7,5 mm du petit côté sans USB | Confirmer que les 6 mm « dans la longueur » partent bien du petit côté sans USB |
 | SSD (maquette) | x 2-82, y 20-42 | Emplacement réel du SSD (sert seulement au contrôle d'encombrement) |

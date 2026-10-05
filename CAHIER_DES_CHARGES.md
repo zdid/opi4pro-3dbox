@@ -1,6 +1,6 @@
 # Cahier des charges — boîtier pour Orange Pi 4 Pro
 
-Version : 0.39 (brouillon) — 2026-10-05
+Version : 0.40 (brouillon) — 2026-10-05
 
 ## 1. Objet
 
@@ -33,6 +33,7 @@ Boîtier destiné à contenir une carte **Orange Pi 4 Pro (A733)** avec refroidi
 | Prise RJ45 : largeur | 15,9 mm |
 | Prise RJ45 : rebord | aucun |
 | Distance extérieur de la prise USB à extérieur de la prise RJ45 | **51,2 mm** (mesure de référence, la plus sûre) |
+| Distance du grand côté du 40 broches à l'extérieur de la 1re prise USB | 2,5 mm |
 | SSD : dépassement sous la carte | 4,5 mm (du dessous du circuit imprimé de l'Orange Pi au dessous du SSD) |
 | Espace entre les deux prises USB | 4,7 mm |
 | Espace entre prise USB et RJ45 | 4,6 mm |
@@ -56,7 +57,7 @@ Fente microSD : sous la carte, sur le **petit côté sans USB**. Mesurée depuis
 
 Microphone : rond, **Ø 5,1 mm**, posé à plat sur le dessus de la carte, à l'angle formé par le **petit côté sans USB** et le **grand côté des prises USB-C, HDMI et audio**, il **dépasse de 0,3 mm** des deux bords de la carte (grand côté et petit côté, confirmé) (largeur mesurée carte + micro : 56 mm, contre 55,7 mm pour la carte seule).
 
-Bouton POWER : sur le **petit côté sans USB**, juste à côté du microphone. Point extérieur le plus éloigné : **48,8 mm depuis le grand côté du 40 broches** (confirmé), soit 6,9 mm du grand côté des prises HDMI/USB-C. Bouton **rond, Ø 2,1 mm**, dépassant de **0,2 mm** du bord de la carte.
+Bouton POWER : sur le **petit côté sans USB**, juste à côté du microphone. Point extérieur le plus éloigné : **48,8 mm depuis le grand côté du 40 broches** (confirmé), soit 6,9 mm du grand côté des prises HDMI/USB-C. Bouton **rond, Ø 2,1 à 2,2 mm**, dépassant de **0,2 mm** du bord de la carte ; son sommet est à **4,8 mm** du dessous de la carte (centre à 3,7 mm).
 
 Échancrure dans le bord de la carte, **sous le bouton POWER** (petit côté sans USB, près du micro) : **1,6 mm** de profondeur, **6 mm** de large, de **4,5 à 10,5 mm du grand côté des prises HDMI/USB-C** (confirmé). Le socle la laisse libre (pas de paroi qui remplisse l'échancrure ni gêne le bouton).
 
