@@ -1,6 +1,6 @@
 # Boîtier Orange Pi 4 Pro — fichiers FreeCAD
 
-Première version (v1) construite à partir de `CAHIER_DES_CHARGES.md` (v0.43).
+Première version (v1) construite à partir de `CAHIER_DES_CHARGES.md` (v0.44).
 
 | Fichier | Rôle |
 |---|---|
@@ -12,7 +12,7 @@ Relancer la macro (FreeCAD > Macro > Macros… > Exécuter) régénère les troi
 
 ## Ce que fait la v1
 
-- **Cale du SSD** : un plot conique (Ø 7 à la base, Ø 5 au contact) sous le bout du SSD, au droit du support de vis M.2 (bord du contact à 87,6 mm du petit côté sans USB et à 33,4 mm du côté 40 broches), le maintient quand il n'est pas vissé (`SSD_CALE`).
+- **Cale du SSD** : un plot conique (Ø 7 à la base, Ø 5 au contact) sous le bout du SSD, au droit du support de vis M.2 (bord du contact à 87,6 mm du petit côté sans USB et à 33,4 mm du côté 40 broches), le maintient quand il n'est pas vissé (`SSD_CALE`). Elle est creusée pour loger le téton du support (Ø 3,1). `SSD_CALE_DECALAGE` permet de la déplacer vers l'intérieur du SSD en cale pleine.
 - **Socle** : la carte s'encastre dedans (jeu 0,5 mm) et se visse sur 4 plots. Les plots laissent 3 mm d'air sous le SSD. Ouvertures pour les prises, la microSD avec un creux pour la saisir, et le micro. Un poussoir à languette souple pour le bouton POWER. Un double fond avec un trou de serrure pour accrocher le boîtier à une vis.
 - **Capot** : ventilateur 40 × 10 mm vissé sous le dessus (entraxe 32 mm, trous légèrement oblongs), grille d'entrée d'air au-dessus, ouvertures des prises.
 - **Circulation d'air** : le ventilateur souffle vers l'intérieur, sur les dissipateurs. Un couloir de 3 mm le long du côté 40 broches fait descendre l'air sous la carte. L'air passe sur le SSD et sort par des fentes basses côté HDMI et côté USB.
@@ -38,3 +38,5 @@ Dimensions hors tout : 105 × 74 × 45 mm, bossages d'angle compris.
 
 | Paramètre | Valeur supposée | Quoi mesurer |
 |---|---|---|
+| `SSD_TETON_PROF` | 3 mm | De combien le téton du support dépasse sous le SSD |
+| `SSD_EP_PCB` | 0,8 mm | Épaisseur du circuit du SSD (règle la hauteur de la cale) |

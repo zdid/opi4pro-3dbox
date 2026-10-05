@@ -43,6 +43,13 @@ SSD_CALE_BASE_D = 7.0   # diamètre à la base (plot conique, plus solide)
 SSD_CALE_X = 87.6 - SSD_CALE_D / 2
 # Point le plus éloigné du support à 33,4 mm du grand côté du 40 broches.
 SSD_CALE_Y = 33.4 - SSD_CALE_D / 2
+# Le SSD repose sur l'épaulement du support ; le téton (Ø 3,1 environ) passe dans
+# l'encoche du SSD et dépasse dessous : la cale est creusée pour le loger.
+SSD_TETON_D = 3.1
+SSD_TETON_JEU = 0.25    # jeu radial autour du téton
+SSD_TETON_PROF = 3.0    # A MESURER : profondeur du logement (dépassement du téton sous le SSD)
+SSD_CALE_DECALAGE = 0.0 # décale la cale vers l'intérieur du SSD (mm, vers X décroissant) ;
+                        # avec >= 4,5, cale pleine posée à côté de l'encoche, sans logement
 SSD_X0 = SSD_CALE_X - SSD_LONG   # pour la maquette (bout du SSD au centre de la cale)
 
 # Trous de fixation : Ø 3,0, entraxes 58 (X) x 49 (Y).
@@ -191,8 +198,12 @@ def construire_socle():
     # Cale du SSD : plot sous le bout du SSD, à l'endroit de la vis M.2
     if SSD_CALE:
         z0, z1 = Z_PLANCHER - 0.01, -(SSD_APPUI + SSD_EP_PCB)
+        cx = SSD_CALE_X - SSD_CALE_DECALAGE
         s = s.fuse(Part.makeCone(SSD_CALE_BASE_D / 2, SSD_CALE_D / 2, z1 - z0,
-                                 V(SSD_CALE_X, SSD_CALE_Y, z0), V(0, 0, 1)))
+                                 V(cx, SSD_CALE_Y, z0), V(0, 0, 1)))
+        logement = SSD_TETON_D / 2 + SSD_TETON_JEU
+        if SSD_CALE_DECALAGE < SSD_CALE_D / 2 + logement:
+            s = s.cut(cyl_z(SSD_CALE_X, SSD_CALE_Y, 2 * logement, z1 - SSD_TETON_PROF, z1 + 0.1))
     # Plots de la carte
     plots = union([cyl_z(x, y, PLOT_D, Z_PLANCHER - 0.01, 0) for x, y in TROUS])
     s = s.fuse(plots)
