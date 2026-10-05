@@ -64,6 +64,11 @@ USB_Y0 = 2.5            # distance du bord 40 broches à la 1re prise USB (mesur
 USB_SPAN = 51.2                         # extérieur 1re USB -> extérieur RJ45
 USB_H = 16.5                            # hauteur des prises USB au-dessus de la carte, rebord compris
 USB_REBORD = 0.8                        # rebord courbé des USB, sur les côtés
+USB_LARG = 13.1                         # largeur du corps d'une prise USB (double)
+USB_ECART = 4.7                         # espace entre les deux prises USB
+RJ45_LARG = 15.9                        # largeur de la prise RJ45 (calée sur l'extrémité des 51,2 mm)
+RJ45_H = 13.8                           # hauteur du RJ45 au-dessus de la carte
+JEU_PRISE = 0.3                         # jeu autour de chaque prise USB / RJ45 dans sa fenêtre
 
 # Côté HDMI (Y = 55,7) : (nom, x début, x fin, hauteur carte incluse, dépassement,
 #                         taille de la fiche du câble (largeur, hauteur) pour le lamage)
@@ -174,10 +179,13 @@ def centres_bossages():
 def decoupes_communes():
     """Ouvertures traversant le socle et le capot (prises)."""
     d = []
-    # Côté USB / RJ45 : une fenêtre pour les 3 prises
-    d.append(boite(CARTE_L, XO1 + 1,
-                   USB_Y0 - USB_REBORD - JEU, USB_Y0 + USB_SPAN + USB_REBORD + JEU,
-                   CARTE_EP - JEU, CARTE_EP + USB_H + JEU))
+    # Côté USB / RJ45 : une fenêtre par prise, séparées par des pattes
+    usb1 = (USB_Y0, USB_Y0 + USB_LARG)
+    usb2 = (usb1[1] + USB_ECART, usb1[1] + USB_ECART + USB_LARG)
+    rj45 = (USB_Y0 + USB_SPAN - RJ45_LARG, USB_Y0 + USB_SPAN)
+    for (y0, y1), rebord, h in ((usb1, USB_REBORD, USB_H), (usb2, USB_REBORD, USB_H), (rj45, 0.0, RJ45_H)):
+        d.append(boite(CARTE_L, XO1 + 1, y0 - rebord - JEU_PRISE, y1 + rebord + JEU_PRISE,
+                       CARTE_EP - JEU, CARTE_EP + h + JEU_PRISE))
     # Côté HDMI : USB-C, HDMI, audio + lamages pour les fiches
     for nom, x0, x1, h, dep, (fl, fh) in PRISES_Y:
         d.append(boite(x0 - JEU, x1 + JEU, CARTE_W - 1, YO1 + 1, CARTE_EP - JEU, h + JEU))
@@ -301,7 +309,11 @@ def construire_maquette():
     """Carte, SSD, prises et ventilateur simplifiés, pour contrôler l'encombrement."""
     m = [boite(0, CARTE_L, 0, CARTE_W, 0, CARTE_EP),
          boite(SSD_X0, SSD_X0 + SSD_LONG, SSD_Y0, SSD_Y1, -SSD_SOUS, 0),
-         boite(CARTE_L - 17, CARTE_L + 2.8, USB_Y0, USB_Y0 + USB_SPAN, CARTE_EP, CARTE_EP + USB_H),
+         boite(CARTE_L - 17, CARTE_L + 2.8, USB_Y0, USB_Y0 + USB_LARG, CARTE_EP, CARTE_EP + USB_H),
+         boite(CARTE_L - 17, CARTE_L + 2.8, USB_Y0 + USB_LARG + USB_ECART, USB_Y0 + 2 * USB_LARG + USB_ECART,
+               CARTE_EP, CARTE_EP + USB_H),
+         boite(CARTE_L - 21, CARTE_L + 2.8, USB_Y0 + USB_SPAN - RJ45_LARG, USB_Y0 + USB_SPAN,
+               CARTE_EP, CARTE_EP + RJ45_H),
          boite(FAN_X - FAN / 2, FAN_X + FAN / 2, FAN_Y - FAN / 2, FAN_Y + FAN / 2, Z_FAN_BAS, Z_PLAFOND_INT),
          cyl_z(MIC_D / 2 - MIC_DEPASSE, CARTE_W - MIC_D / 2 + MIC_DEPASSE, MIC_D, CARTE_EP, CARTE_EP + 1.5),
          boite(-3, 12, SD_Y0, SD_Y1, -SD_SOUS, 0)]
