@@ -1,6 +1,6 @@
 # Cahier des charges — boîtier pour Orange Pi 4 Pro
 
-Version : 0.36 (brouillon) — 2026-10-05
+Version : 0.39 (brouillon) — 2026-10-05
 
 ## 1. Objet
 
@@ -54,7 +54,7 @@ Dépassement du bord de la carte (mesuré) : USB-C **1,4 mm**, HDMI **2,6 mm**, 
 
 Fente microSD : sous la carte, sur le **petit côté sans USB**. Mesurée depuis le grand côté du 40 broches : de **7,8 mm** à **18,9 mm** (largeur du support **11,1 mm**). La carte microSD insérée **dépasse de 3 mm** du bord de la carte. Hauteur du support : **2,8 mm carte incluse**, soit **1,5 mm sous la carte** (épaisseur de carte 1,3 mm).
 
-Microphone : rond, **Ø 5,1 mm**, posé à plat sur le dessus de la carte, à l'angle formé par le **petit côté sans USB** et le **grand côté des prises USB-C, HDMI et audio**, il **dépasse de 0,3 mm** des bords de la carte (largeur mesurée carte + micro : 56 mm, contre 55,7 mm pour la carte seule).
+Microphone : rond, **Ø 5,1 mm**, posé à plat sur le dessus de la carte, à l'angle formé par le **petit côté sans USB** et le **grand côté des prises USB-C, HDMI et audio**, il **dépasse de 0,3 mm** des deux bords de la carte (grand côté et petit côté, confirmé) (largeur mesurée carte + micro : 56 mm, contre 55,7 mm pour la carte seule).
 
 Bouton POWER : sur le **petit côté sans USB**, juste à côté du microphone. Point extérieur le plus éloigné : **48,8 mm depuis le grand côté du 40 broches** (confirmé), soit 6,9 mm du grand côté des prises HDMI/USB-C. Bouton **rond, Ø 2,1 mm**, dépassant de **0,2 mm** du bord de la carte.
 
@@ -86,7 +86,7 @@ Les dissipateurs collés ont une hauteur de **6 mm** (mesurée) et ne dépassent
 | C1 | La carte Orange Pi 4 Pro est contenue entièrement dans le boîtier, avec accès à tous ses connecteurs (E/S, alimentation, GPIO si utilisés). |
 | C2 | Des dissipateurs statiques sont collés sur les puces de la carte, sans dépasser la hauteur des prises USB : le ventilateur placé au-dessus se trouve au-delà de 16,5 mm. |
 | C3 | Un SSD M.2 2280 NVMe est enfiché à l'arrière de la carte, sans radiateur et à quelques millimètres seulement du circuit imprimé : le boîtier ménage l'espace et le flux d'air nécessaires. |
-| C4 | Le ventilateur est fixé sur le boîtier, pas sur la carte. |
+| C4 | Le ventilateur est fixé **à l'intérieur du capot** (sous le dessus du capot), pas sur la carte. |
 | C5 | La fente microSD (face arrière) reste accessible sans démonter le boîtier : ouverture dans la paroi du socle, de 7,8 à 18,9 mm depuis le grand côté du 40 broches, avec de quoi saisir la carte qui dépasse de 3 mm. |
 | C6 | Les prises HDMI, USB-C et audio ne dépassent du bord de la carte que de 1,4 à 2,8 mm. Autour de chaque ouverture, la paroi est **amincie localement** (lamage côté extérieur) pour que la fiche du câble s'enfonce complètement sans buter contre la paroi. Les lamages acceptent les fiches **les plus courantes du commerce** (dimensions à fixer à la conception, avec marge). |
 | C7 | Le bouton **POWER** (rond, Ø 2,1 mm) reste actionnable de l'extérieur par un **poussoir intégré au boîtier** : une languette souple imprimée dans la paroi, avec un téton qui dépasse légèrement de la carcasse et vient appuyer sur le bouton. |
@@ -95,9 +95,21 @@ Les dissipateurs collés ont une hauteur de **6 mm** (mesurée) et ne dépassent
 
 | Réf. | Exigence |
 |---|---|
-| S1 | Le boîtier comporte un **socle** dont la forme épouse le dessous de la carte (SSD compris). |
+| S1 | Le boîtier comporte un **socle** dans lequel la carte **s'encastre** (bac épousant le contour de la carte, SSD compris). |
 | S2 | Le dessous des prises de la carte (USB, RJ45, HDMI, USB-C, audio) **s'encastre dans le socle** : les ouvertures des prises sont en partie taillées dans les parois du socle. |
 | S3 | Le socle laisse un dégagement au niveau du **microphone** (Ø 5,1 mm), qui dépasse de 0,3 mm des bords de la carte à l'angle petit côté sans USB / grand côté des prises USB-C, HDMI et audio. |
+| S4 | La carte est **vissée sur le socle** par ses 4 trous (Ø 3,0 mm, entraxes 49 × 58 mm) avec des **vis M2,5** (le M3 passe tout juste dans un trou de 3,0 mm), sur des plots assez hauts pour loger le SSD (4,5 mm sous la carte) et laisser passer l'air dessous. |
+| S5 | Le **capot est vissé au socle** par des **vis M3** (solution préférée). Un assemblage par encastrement est acceptable en complément, pas en remplacement des vis. |
+
+### 3.1 ter Fixation murale
+
+| Réf. | Exigence |
+|---|---|
+| M1 | **Option 1 — accroche sur une vis** : le dessous du socle comporte un trou en forme de serrure (trou de passage de la tête, puis fente) pour pendre le boîtier à une vis du mur. Il accepte des vis de **Ø 3,5 ou 4 mm** avec une tête jusqu'à **8 mm**. |
+| M2 | Le socle a un **double fond** : la tête de la vis reste dans un logement fermé et ne peut toucher ni la carte, ni le SSD, ni aucun composant. |
+| M3 | **Option 2 — pattes latérales** : des bras de fixation de chaque côté du socle, percés pour des vis murales. |
+| M4 | Les deux options sont possibles (pattes ajoutées ou non au socle, ou deux variantes de socle). |
+| M5 | Monté au mur, le dessous du socle est plaqué contre le mur : les entrées et sorties d'air ne sont **pas** placées sur la face arrière, mais sur les côtés et le capot. |
 
 ### 3.2 Refroidissement
 
@@ -146,7 +158,7 @@ L'antenne est mise de côté pour l'instant : les exigences ci-dessous restent v
 
 ### 3.4 Fabrication
 
-Boîtier imprimé en 3D en **PLA** (seule matière disponible), fichiers sources fournis (format à décider). Le PLA ramollit vers 55-60 °C : la conception évite tout contact entre le boîtier et les dissipateurs ou le SSD, et la température intérieure est mesurée lors des essais (§5).
+Boîtier imprimé en 3D en **PLA** (seule matière disponible). Fichiers sources au format **FreeCAD** (logiciel de l'utilisateur), avec export STL pour l'impression. Le PLA ramollit vers 55-60 °C : la conception évite tout contact entre le boîtier et les dissipateurs ou le SSD, et la température intérieure est mesurée lors des essais (§5).
 
 ## 4. Points ouverts
 
@@ -158,9 +170,9 @@ Boîtier imprimé en 3D en **PLA** (seule matière disponible), fichiers sources
 4. **Dissipateurs** : hauteur mesurée, 6 mm. Reste à relever leur surface (longueur × largeur) et à confirmer si les 6 mm s'entendent au-dessus de la puce ou au-dessus du circuit imprimé.
 5. **Antenne (reportée)** : type de connecteur de l'embase de la carte (U.FL probable, à confirmer) et antenne de remplacement (SMA ou RP-SMA, avec câble pigtail).
 6. **Matière** : PLA (seule matière disponible). Aucun contact entre le boîtier et les parties chaudes (dissipateurs, SSD).
-7. **Usage** : bureau, serveur, mur ou rack. Cela détermine l'orientation et les pieds.
+7. **Usage** : posé ou fixé au mur (voir 3.1 ter). Vis murales : Ø 3,5 ou 4 mm, tête jusqu'à 8 mm (les deux acceptées).
 8. **Poussière** : un filtre sur l'entrée d'air est-il souhaité ?
-9. **Accès** : boîtier ouvrable sans outil, ou vissé ?
+9. **Accès** : capot vissé (décidé). Vis : M2,5 pour la carte, M3 pour le capot (l'utilisateur dispose des deux).
 
 ## 5. Validation prévue
 
