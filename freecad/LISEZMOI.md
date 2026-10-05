@@ -14,6 +14,7 @@ Relancer la macro (FreeCAD > Macro > Macros… > Exécuter) régénère les troi
 
 - **Cale du SSD** : un plot conique (Ø 8 à la base, Ø 6 au contact, surface de la tête de vis) sous le bout du SSD, au droit du support de vis M.2 (bord du contact à 87,6 mm du petit côté sans USB et à 33,4 mm du côté 40 broches), le maintient quand il n'est pas vissé (`SSD_CALE`). Elle a un léger creux (0,5 mm) au droit du téton du support (Ø 3,1), qui arrive au ras du SSD. `SSD_CALE_DECALAGE` permet de la déplacer vers l'intérieur du SSD en cale pleine.
 - **Socle** : la carte s'encastre dedans (jeu 0,5 mm) et se visse sur 4 plots. Les plots laissent 3 mm d'air sous le SSD. Ouvertures pour les prises, la microSD avec un creux pour la saisir, et le micro. Un poussoir à languette souple pour le bouton POWER. Un double fond avec un trou de serrure pour accrocher le boîtier à une vis.
+- **Côté HDMI** : ouvertures à la forme des prises : USB-C oblongue (bouts arrondis), HDMI rectangle aux coins du bas coupés, jack audio rond ; lamages autour pour les fiches.
 - **Côté USB / RJ45** : une fenêtre par prise, séparées par des pattes (2,5 mm entre les deux USB, 3 mm entre USB et RJ45).
 - **Capot** : ventilateur 40 × 10 mm vissé sous le dessus (entraxe 32 mm, trous légèrement oblongs), grille d'entrée d'air au-dessus, ouvertures des prises.
 - **Circulation d'air** : le ventilateur souffle vers l'intérieur, sur les dissipateurs. Un couloir de 3 mm le long du côté 40 broches fait descendre l'air sous la carte. L'air passe sur le SSD et sort par des fentes basses côté HDMI et côté USB.
@@ -64,6 +65,10 @@ Pour les modifier :
 | `JEU_AIR`, `COULOIR_X` | 3 ; 12-62 | Largeur et longueur du couloir d'air qui descend vers le SSD |
 | `AIR_SOUS_SSD` | 3,0 | Espace d'air sous le SSD |
 | `MINI_PAROI` | 0,8 | Épaisseur minimale laissée par les lamages des fiches |
+| `JEU_OUVERTURE` | 0,3 | Jeu autour des prises USB-C, HDMI et audio |
+| `HDMI_CHANFREIN` | 1,5 | Taille des coins coupés de l'ouverture HDMI |
+| `HDMI_CHANFREIN_EN_BAS` | `True` | Coins coupés côté carte ; `False` pour les mettre en haut si la prise est montée dans l'autre sens |
+| `PRISES_Y` (dernier champ) | `oblong`, `chanfrein`, `rond` | Forme de chaque ouverture ; `rect` pour revenir au rectangle |
 | `JEU_PRISE` | 0,3 | Jeu autour de chaque prise USB / RJ45 dans sa fenêtre (pattes entre les prises) |
 
 ### Cotes de la carte (mesurées)

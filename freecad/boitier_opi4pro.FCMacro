@@ -73,10 +73,15 @@ JEU_PRISE = 0.3                         # jeu autour de chaque prise USB / RJ45 
 # Côté HDMI (Y = 55,7) : (nom, x début, x fin, hauteur carte incluse, dépassement,
 #                         taille de la fiche du câble (largeur, hauteur) pour le lamage)
 PRISES_Y = [  # voir le commentaire ci-dessus
-    ("USB-C", 11.7, 20.5, 5.0, 1.4, (13.0, 8.5)),
-    ("HDMI", 27.8, 42.6, 7.3, 2.6, (22.0, 12.5)),
-    ("Audio", 54.2, 60.2, 6.5, 2.8, (11.0, 11.0)),
+    ("USB-C", 11.7, 20.5, 5.0, 1.4, (13.0, 8.5), "oblong"),
+    ("HDMI", 27.8, 42.6, 7.3, 2.6, (22.0, 12.5), "chanfrein"),
+    ("Audio", 54.2, 60.2, 6.5, 2.8, (11.0, 11.0), "rond"),
 ]
+# Formes des ouvertures : "oblong" (bouts arrondis), "chanfrein" (rectangle aux coins
+# du bas coupés en biais), "rond" (trou rond, diamètre = largeur de la prise), "rect".
+HDMI_CHANFREIN = 1.5                    # taille des coins coupés de l'ouverture HDMI
+HDMI_CHANFREIN_EN_BAS = True            # coins coupés côté carte (False : côté haut)
+JEU_OUVERTURE = 0.3                     # jeu autour des prises USB-C, HDMI, audio
 
 # microSD (sous la carte, petit côté sans USB) : de 7,8 à 18,9 depuis le bord 40 broches,
 # support 1,5 sous la carte, carte insérée qui dépasse de 3 mm.
@@ -164,6 +169,35 @@ def cyl_y(x, z, d, y0, y1):
     return Part.makeCylinder(d / 2, y1 - y0, V(x, y0, z), V(0, 1, 0))
 
 
+def prisme_xz(points, y0, y1):
+    """Profil (x, z) fermé extrudé selon Y, de y0 à y1."""
+    pts = [V(x, y0, z) for x, z in points]
+    face = Part.Face(Part.makePolygon(pts + [pts[0]]))
+    return face.extrude(V(0, y1 - y0, 0))
+
+
+def ouverture_y(forme, x0, x1, z0, z1, y0, y1):
+    """Ouverture traversant une paroi perpendiculaire à Y, de forme donnée."""
+    w, h = x1 - x0, z1 - z0
+    xc, zc = (x0 + x1) / 2, (z0 + z1) / 2
+    if forme == "rond":
+        return cyl_y(xc, zc, w, y0, y1)
+    if forme == "oblong":
+        r = min(w, h) / 2
+        if w >= h:
+            return union([boite(x0 + r, x1 - r, y0, y1, z0, z1),
+                          cyl_y(x0 + r, zc, 2 * r, y0, y1), cyl_y(x1 - r, zc, 2 * r, y0, y1)])
+        return boite(x0, x1, y0, y1, z0, z1)
+    if forme == "chanfrein":
+        c = min(HDMI_CHANFREIN, h / 2, w / 2)
+        if HDMI_CHANFREIN_EN_BAS:
+            pts = [(x0 + c, z0), (x1 - c, z0), (x1, z0 + c), (x1, z1), (x0, z1), (x0, z0 + c)]
+        else:
+            pts = [(x0, z0), (x1, z0), (x1, z1 - c), (x1 - c, z1), (x0 + c, z1), (x0, z1 - c)]
+        return prisme_xz(pts, y0, y1)
+    return boite(x0, x1, y0, y1, z0, z1)
+
+
 def union(formes):
     res = formes[0]
     for f in formes[1:]:
@@ -187,8 +221,9 @@ def decoupes_communes():
         d.append(boite(CARTE_L, XO1 + 1, y0 - rebord - JEU_PRISE, y1 + rebord + JEU_PRISE,
                        CARTE_EP - JEU, CARTE_EP + h + JEU_PRISE))
     # Côté HDMI : USB-C, HDMI, audio + lamages pour les fiches
-    for nom, x0, x1, h, dep, (fl, fh) in PRISES_Y:
-        d.append(boite(x0 - JEU, x1 + JEU, CARTE_W - 1, YO1 + 1, CARTE_EP - JEU, h + JEU))
+    for nom, x0, x1, h, dep, (fl, fh), forme in PRISES_Y:
+        d.append(ouverture_y(forme, x0 - JEU_OUVERTURE, x1 + JEU_OUVERTURE,
+                             CARTE_EP - JEU_OUVERTURE, h + JEU_OUVERTURE, CARTE_W - 1, YO1 + 1))
         y_lamage = max(YI1 + MINI_PAROI, CARTE_W + dep - 0.2)
         if y_lamage < YO1:
             xc, zc = (x0 + x1) / 2, (CARTE_EP + h) / 2
@@ -317,8 +352,9 @@ def construire_maquette():
          boite(FAN_X - FAN / 2, FAN_X + FAN / 2, FAN_Y - FAN / 2, FAN_Y + FAN / 2, Z_FAN_BAS, Z_PLAFOND_INT),
          cyl_z(MIC_D / 2 - MIC_DEPASSE, CARTE_W - MIC_D / 2 + MIC_DEPASSE, MIC_D, CARTE_EP, CARTE_EP + 1.5),
          boite(-3, 12, SD_Y0, SD_Y1, -SD_SOUS, 0)]
-    for nom, x0, x1, h, dep, _ in PRISES_Y:
-        m.append(boite(x0, x1, CARTE_W - 10, CARTE_W + dep, CARTE_EP, h))
+    for nom, x0, x1, h, dep, _, forme in PRISES_Y:
+        m.append(boite(x0, x1, CARTE_W - 10, CARTE_W - 1, CARTE_EP, h))
+        m.append(ouverture_y(forme, x0, x1, CARTE_EP, h, CARTE_W - 1.01, CARTE_W + dep))
     return union(m)
 
 
