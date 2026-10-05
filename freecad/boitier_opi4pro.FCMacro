@@ -28,12 +28,12 @@ CARTE_EP = 1.3          # épaisseur du circuit imprimé
 SSD_SOUS = 4.5          # dépassement du SSD sous la carte
 # SSD M.2 2280 : 22 de large, 84 de long avec le connecteur ; son bord le plus éloigné
 # du côté HDMI est à 35,2 mm de ce côté (SSD décentré).
-SSD_LARG = 22.0
-SSD_LONG = 84.0
+SSD_LARG = 22.0                         # largeur du SSD
+SSD_LONG = 84.0                         # longueur du SSD, connecteur compris
 SSD_Y1 = CARTE_W - (35.2 - SSD_LARG)   # bord côté HDMI
 SSD_Y0 = SSD_Y1 - SSD_LARG             # bord côté 40 broches
 # Support de vis du SSD (écrou sur la carte) : le SSD y repose à 3,9 mm sous la carte.
-SSD_APPUI = 3.9
+SSD_APPUI = 3.9                         # hauteur de l'épaulement du support sous la carte
 SSD_EP_PCB = 0.8        # épaisseur du circuit du SSD (valeur courante, non mesurable)
 SSD_CALE = True         # plot qui cale le bout du SSD par dessous (si pas de vis)
 SSD_CALE_D = 6.0        # diamètre au contact du SSD (surface prévue pour la tête de vis)
@@ -41,12 +41,12 @@ SSD_CALE_BASE_D = 8.0   # diamètre à la base (plot conique, plus solide)
 # Support de vis sur la carte : point le plus éloigné à 87,6 mm du petit côté sans USB.
 # Centre du support (téton) : cotes du point le plus éloigné moins un rayon de 2,5 mm.
 SSD_SUPPORT_R = 2.5     # A MESURER si besoin : rayon extérieur du support sur la carte
-SSD_CALE_X = 87.6 - SSD_SUPPORT_R
+SSD_CALE_X = 87.6 - SSD_SUPPORT_R       # centre de la cale en X
 # Point le plus éloigné du support à 33,4 mm du grand côté du 40 broches.
-SSD_CALE_Y = 33.4 - SSD_SUPPORT_R
+SSD_CALE_Y = 33.4 - SSD_SUPPORT_R       # centre de la cale en Y
 # Le SSD repose sur l'épaulement du support ; le téton (Ø 3,1 environ) passe dans
 # l'encoche du SSD et arrive à son ras : la cale a un léger creux pour ne pas buter dessus.
-SSD_TETON_D = 3.1
+SSD_TETON_D = 3.1                       # diamètre du téton du support
 SSD_TETON_JEU = 0.25    # jeu radial autour du téton
 SSD_TETON_PROF = 0.5    # le téton arrive au ras du SSD : logement peu profond, par sécurité
 SSD_CALE_DECALAGE = 0.0 # décale la cale vers l'intérieur du SSD (mm, vers X décroissant) ;
@@ -56,18 +56,18 @@ SSD_X0 = SSD_CALE_X - SSD_LONG   # pour la maquette (bout du SSD au centre de la
 # Trous de fixation : Ø 3,0, entraxes 58 (X) x 49 (Y).
 # Hypothèse : les 6 mm « dans la longueur » sont pris depuis le petit côté
 # SANS USB (centre à 7,5 mm). A MESURER si doute.
-TROUS = [(7.5, 3.25), (65.5, 3.25), (7.5, 52.25), (65.5, 52.25)]
+TROUS = [(7.5, 3.25), (65.5, 3.25), (7.5, 52.25), (65.5, 52.25)]# centres (X, Y)
 
 # Côté USB/RJ45 (X = 89) : 51,2 mm de l'extérieur de la 1re USB à l'extérieur du RJ45,
 # hauteur max 16,5 au-dessus de la carte (rebord compris), dépassement 2,8.
 USB_Y0 = 2.5            # distance du bord 40 broches à la 1re prise USB (mesuré)
-USB_SPAN = 51.2
-USB_H = 16.5
-USB_REBORD = 0.8
+USB_SPAN = 51.2                         # extérieur 1re USB -> extérieur RJ45
+USB_H = 16.5                            # hauteur des prises USB au-dessus de la carte, rebord compris
+USB_REBORD = 0.8                        # rebord courbé des USB, sur les côtés
 
 # Côté HDMI (Y = 55,7) : (nom, x début, x fin, hauteur carte incluse, dépassement,
 #                         taille de la fiche du câble (largeur, hauteur) pour le lamage)
-PRISES_Y = [
+PRISES_Y = [  # voir le commentaire ci-dessus
     ("USB-C", 11.7, 20.5, 5.0, 1.4, (13.0, 8.5)),
     ("HDMI", 27.8, 42.6, 7.3, 2.6, (22.0, 12.5)),
     ("Audio", 54.2, 60.2, 6.5, 2.8, (11.0, 11.0)),
@@ -76,32 +76,32 @@ PRISES_Y = [
 # microSD (sous la carte, petit côté sans USB) : de 7,8 à 18,9 depuis le bord 40 broches,
 # support 1,5 sous la carte, carte insérée qui dépasse de 3 mm.
 SD_Y0, SD_Y1 = 7.8, 18.9
-SD_SOUS = 1.5
+SD_SOUS = 1.5                           # hauteur du support microSD sous la carte
 
 # Bouton POWER (petit côté sans USB) : rond Ø 2,1 à 2,2, extérieur à 48,8 du bord 40 broches,
 # dépasse de 0,2 mm du bord, sommet à 4,8 mm du dessous de la carte.
-PWR_D = 2.2
+PWR_D = 2.2                             # diamètre du bouton
 PWR_Y = 48.8 - PWR_D / 2  # centre
-PWR_DEPASSE = 0.2
+PWR_DEPASSE = 0.2                       # dépassement du bouton au-delà du bord de la carte
 PWR_Z = 4.8 - PWR_D / 2  # centre du bouton (sommet mesuré à 4,8 du dessous de la carte)
 
 # Microphone : Ø 5,1, angle petit côté sans USB / côté HDMI, dépasse de 0,3 des deux bords.
-MIC_D = 5.1
-MIC_DEPASSE = 0.3
+MIC_D = 5.1                             # diamètre du micro
+MIC_DEPASSE = 0.3                       # dépassement du micro au-delà des bords
 
 # ----------------------------------------------------------- ventilateur
 FAN = 40.0              # 40 x 40 x 10
-FAN_EP = 10.0
-FAN_ENTRAXE = 32.0
+FAN_EP = 10.0                           # épaisseur du ventilateur
+FAN_ENTRAXE = 32.0                      # entraxe des trous du ventilateur
 FAN_X = 50.0            # centre du ventilateur, au-dessus du SoC et de la mémoire
-FAN_Y = CARTE_W / 2
+FAN_Y = CARTE_W / 2                     # centre du ventilateur en Y
 FAN_JEU_USB = 1.0       # jeu entre le sommet des prises USB et le dessous du ventilateur
 
 # ---------------------------------------------------------------- boîtier
 PAROI = 2.0             # épaisseur des parois
 JEU = 0.5               # jeu carte / paroi
 JEU_AIR = 3.0           # couloir d'air le long du côté 40 broches (descente vers le SSD)
-COULOIR_X = (12.0, 62.0)
+COULOIR_X = (12.0, 62.0)                # étendue du couloir d'air en X
 AIR_SOUS_SSD = 3.0      # espace sous le SSD
 FOND_EXT = 2.0          # double fond : plaque extérieure (trou de serrure)
 FOND_CAVITE = 3.5       #               logement de la tête de vis
@@ -111,24 +111,25 @@ PLAFOND = 2.0           # épaisseur du dessus du capot
 PLOT_D = 6.0            # plots de la carte (vis M2,5)
 PLOT_AVANT_TROU = 2.2   # avant-trou pour vis M2,5 auto-taraudeuse dans le PLA
 BOSSAGE_D = 8.0         # bossages d'angle (vis M3 capot)
-VIS_M3_PASSAGE = 3.4
-VIS_M3_TETE = 6.5
-VIS_M3_AVANT_TROU = 2.6
+VIS_M3_PASSAGE = 3.4                    # trou de passage M3
+VIS_M3_TETE = 6.5                       # lamage de tête M3 (sous le socle)
+VIS_M3_AVANT_TROU = 2.6                 # avant-trou M3 dans les bossages du capot
 MINI_PAROI = 0.8        # épaisseur minimale laissée par les lamages
 
 # Fixation murale
 TROU_SERRURE = True     # option 1 : accroche sur une vis
 SERRURE_TETE = 8.5      # vis Ø 3,5 à 4, tête jusqu'à 8 mm
-SERRURE_FENTE = 4.3
-SERRURE_COURSE = 8.0
+SERRURE_FENTE = 4.3                     # largeur de la fente (corps de la vis)
+SERRURE_COURSE = 8.0                    # longueur de la fente
 OREILLES = False        # option 2 : pattes latérales vissées
-OREILLE_TROU = 4.5
+OREILLE_TROU = 4.5                      # trou des pattes murales
 
 # Ventilation
 FENTES_BASSES = True    # sorties d'air sous la carte (côté HDMI et côté USB) : passage sur le SSD
 FENTES_HAUTES = False   # sorties d'air au-dessus de la carte (petit côté sans USB) : à essayer
 
 # ----------------------------------------------------------- calculs
+# Valeurs déduites des paramètres ci-dessus : ne pas les modifier directement.
 Z_PLANCHER = -(SSD_SOUS + AIR_SOUS_SSD)
 Z_BAS = Z_PLANCHER - FOND_INT - FOND_CAVITE - FOND_EXT
 Z_FAN_BAS = CARTE_EP + USB_H + FAN_JEU_USB

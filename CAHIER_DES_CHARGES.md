@@ -1,6 +1,6 @@
 # Cahier des charges — boîtier pour Orange Pi 4 Pro
 
-Version : 0.46 (brouillon) — 2026-10-05
+Version : 0.47 (brouillon) — 2026-10-05
 
 ## 1. Objet
 
@@ -167,17 +167,15 @@ Boîtier imprimé en 3D en **PLA** (seule matière disponible). Fichiers sources
 
 ## 4. Points ouverts
 
-À préciser avant toute conception :
+Toutes les cotes nécessaires à la conception sont relevées (§2). Restent :
 
-1. **Cotes restantes** : position exacte du microphone le long des bords (diamètre relevé : 5,1 mm). Les cotes USB et RJ45 sont relevées (voir plus haut). « Hauteur au-dessus de la carte » s'entend du dessus du circuit imprimé jusqu'au sommet du connecteur (confirmé).
-2. **SSD** : le dépassement sous la carte est mesuré (4,5 mm). Reste à vérifier la longueur utile du SSD (2280 = 80 mm) par rapport à la longueur de la carte (89 mm).
-3. **Ventilateur** : taille retenue **40 mm**, en 5 V, à 2 ou 4 fils (les deux sont prévus). Épaisseur : **10 mm**. Entraxe de fixation : 32 × 32 mm (standard du commerce, voir F5), à contrôler sur le modèle acheté.
-4. **Dissipateurs** : hauteur mesurée, 6 mm. Reste à relever leur surface (longueur × largeur) et à confirmer si les 6 mm s'entendent au-dessus de la puce ou au-dessus du circuit imprimé.
-5. **Antenne (reportée)** : type de connecteur de l'embase de la carte (U.FL probable, à confirmer) et antenne de remplacement (SMA ou RP-SMA, avec câble pigtail).
-6. **Matière** : PLA (seule matière disponible). Aucun contact entre le boîtier et les parties chaudes (dissipateurs, SSD).
-7. **Usage** : posé ou fixé au mur (voir 3.1 ter). Vis murales : Ø 3,5 ou 4 mm, tête jusqu'à 8 mm (les deux acceptées).
-8. **Poussière** : un filtre sur l'entrée d'air est-il souhaité ?
-9. **Accès** : capot vissé (décidé). Vis : M2,5 pour la carte, M3 pour le capot (l'utilisateur dispose des deux).
+1. **Ventilateur** : entraxe de 32 × 32 mm à contrôler sur le modèle acheté (voir F5).
+2. **Épaisseur du SSD** : estimée à 0,8 mm (non mesurable) ; réglable dans la macro (`SSD_EP_PCB`).
+3. **Antenne (reportée)** : type de connecteur de l'embase de la carte (U.FL probable) et antenne de remplacement (SMA ou RP-SMA, avec câble pigtail).
+4. **Poussière** : filtre sur l'entrée d'air, à décider après les premiers essais.
+5. **Sens de l'air** : soufflage vers l'intérieur dans la v1, à valider par les essais (§5).
+
+Décidé : PLA ; capot vissé (M3), carte vissée (M2,5) ; boîtier posé ou fixé au mur (vis Ø 3,5 ou 4, tête jusqu'à 8 mm) ; fichiers FreeCAD (dossier `freecad/`).
 
 ## 5. Validation prévue
 
