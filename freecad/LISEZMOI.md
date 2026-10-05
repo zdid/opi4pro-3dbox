@@ -7,6 +7,7 @@ Première version (v1) construite à partir de `CAHIER_DES_CHARGES.md` (v0.47).
 | `boitier_opi4pro.FCMacro` | Macro qui construit tout. Les cotes sont des paramètres en tête de fichier. |
 | `boitier_opi4pro.FCStd` | Document FreeCAD produit par la macro : socle, capot, maquette de la carte. |
 | `socle.stl`, `capot.stl` | Pièces à imprimer. |
+| `outils/verifier.py` | Contrôle après la macro : solides valides, aucune collision avec la maquette (`freecadcmd outils/verifier.py`). |
 
 Relancer la macro (FreeCAD > Macro > Macros… > Exécuter) régénère les trois autres fichiers à côté d'elle. Testée en ligne de commande avec FreeCAD 1.1.3.
 
