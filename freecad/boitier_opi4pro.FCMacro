@@ -32,12 +32,16 @@ SSD_LARG = 22.0
 SSD_LONG = 84.0
 SSD_Y1 = CARTE_W - (35.2 - SSD_LARG)   # bord côté HDMI
 SSD_Y0 = SSD_Y1 - SSD_LARG             # bord côté 40 broches
-SSD_X0 = 1.5            # A MESURER : distance du petit côté sans USB au bout du connecteur M.2
 # Support de vis du SSD (écrou sur la carte) : le SSD y repose à 3,9 mm sous la carte.
 SSD_APPUI = 3.9
 SSD_EP_PCB = 0.8        # épaisseur du circuit du SSD
 SSD_CALE = True         # plot qui cale le bout du SSD par dessous (si pas de vis)
-SSD_CALE_D = 6.0
+SSD_CALE_D = 5.0        # diamètre au contact du SSD
+SSD_CALE_BASE_D = 7.0   # diamètre à la base (plot conique, plus solide)
+# Support de vis sur la carte : point le plus éloigné à 87,6 mm du petit côté sans USB.
+# La cale est centrée pour que son contact (Ø 5) s'arrête à cette cote.
+SSD_CALE_X = 87.6 - SSD_CALE_D / 2
+SSD_X0 = SSD_CALE_X - SSD_LONG   # pour la maquette (bout du SSD au centre de la cale)
 
 # Trous de fixation : Ø 3,0, entraxes 58 (X) x 49 (Y).
 # Hypothèse : les 6 mm « dans la longueur » sont pris depuis le petit côté
@@ -184,8 +188,9 @@ def construire_socle():
     s = s.cut(cyl_z(mx, my, MIC_D + 2 * JEU, CARTE_EP - 0.01, SPLIT + 1))
     # Cale du SSD : plot sous le bout du SSD, à l'endroit de la vis M.2
     if SSD_CALE:
-        s = s.fuse(cyl_z(SSD_X0 + SSD_LONG - 1.5, (SSD_Y0 + SSD_Y1) / 2, SSD_CALE_D,
-                         Z_PLANCHER - 0.01, -(SSD_APPUI + SSD_EP_PCB)))
+        z0, z1 = Z_PLANCHER - 0.01, -(SSD_APPUI + SSD_EP_PCB)
+        s = s.fuse(Part.makeCone(SSD_CALE_BASE_D / 2, SSD_CALE_D / 2, z1 - z0,
+                                 V(SSD_CALE_X, (SSD_Y0 + SSD_Y1) / 2, z0), V(0, 0, 1)))
     # Plots de la carte
     plots = union([cyl_z(x, y, PLOT_D, Z_PLANCHER - 0.01, 0) for x, y in TROUS])
     s = s.fuse(plots)
