@@ -36,13 +36,14 @@ SSD_Y0 = SSD_Y1 - SSD_LARG             # bord côté 40 broches
 SSD_APPUI = 3.9
 SSD_EP_PCB = 0.8        # épaisseur du circuit du SSD
 SSD_CALE = True         # plot qui cale le bout du SSD par dessous (si pas de vis)
-SSD_CALE_D = 5.0        # diamètre au contact du SSD
-SSD_CALE_BASE_D = 7.0   # diamètre à la base (plot conique, plus solide)
+SSD_CALE_D = 6.0        # diamètre au contact du SSD (surface prévue pour la tête de vis)
+SSD_CALE_BASE_D = 8.0   # diamètre à la base (plot conique, plus solide)
 # Support de vis sur la carte : point le plus éloigné à 87,6 mm du petit côté sans USB.
-# La cale est centrée pour que son contact (Ø 5) s'arrête à ces cotes.
-SSD_CALE_X = 87.6 - SSD_CALE_D / 2
+# Centre du support (téton) : cotes du point le plus éloigné moins un rayon de 2,5 mm.
+SSD_SUPPORT_R = 2.5     # A MESURER si besoin : rayon extérieur du support sur la carte
+SSD_CALE_X = 87.6 - SSD_SUPPORT_R
 # Point le plus éloigné du support à 33,4 mm du grand côté du 40 broches.
-SSD_CALE_Y = 33.4 - SSD_CALE_D / 2
+SSD_CALE_Y = 33.4 - SSD_SUPPORT_R
 # Le SSD repose sur l'épaulement du support ; le téton (Ø 3,1 environ) passe dans
 # l'encoche du SSD et dépasse dessous : la cale est creusée pour le loger.
 SSD_TETON_D = 3.1

@@ -1,6 +1,6 @@
 # Cahier des charges — boîtier pour Orange Pi 4 Pro
 
-Version : 0.44 (brouillon) — 2026-10-05
+Version : 0.45 (brouillon) — 2026-10-05
 
 ## 1. Objet
 
@@ -104,7 +104,7 @@ Les dissipateurs collés ont une hauteur de **6 mm** (mesurée) et ne dépassent
 | S3 | Le socle laisse un dégagement au niveau du **microphone** (Ø 5,1 mm), qui dépasse de 0,3 mm des bords de la carte à l'angle petit côté sans USB / grand côté des prises USB-C, HDMI et audio. |
 | S4 | La carte est **vissée sur le socle** par ses 4 trous (Ø 3,0 mm, entraxes 49 × 58 mm) avec des **vis M2,5** (le M3 passe tout juste dans un trou de 3,0 mm), sur des plots assez hauts pour loger le SSD (4,5 mm sous la carte) et laisser passer l'air dessous. |
 | S5 | Le **capot est vissé au socle** par des **vis M3** (solution préférée). Un assemblage par encastrement est acceptable en complément, pas en remplacement des vis. |
-| S6 | Un **plot du socle cale le bout du SSD** par dessous, à l'endroit du support de vis M.2, pour le maintenir quand il n'est pas vissé. **Ø 5 mm au contact**, creusée au centre pour loger le téton du support (Ø 3,1 + jeu), son bord s'arrêtant à 87,6 mm du petit côté sans USB et à 33,4 mm du grand côté du 40 broches. |
+| S6 | Un **plot du socle cale le bout du SSD** par dessous, à l'endroit du support de vis M.2, pour le maintenir quand il n'est pas vissé. **Ø 6 mm au contact** (surface prévue pour la tête de vis), centrée sur le téton du support et creusée pour le loger (Ø 3,1 + jeu). |
 
 ### 3.1 ter Fixation murale
 
