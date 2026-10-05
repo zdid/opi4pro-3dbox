@@ -1,6 +1,6 @@
 # Cahier des charges — boîtier pour Orange Pi 4 Pro
 
-Version : 0.10 (brouillon) — 2026-10-05
+Version : 0.13 (brouillon) — 2026-10-05
 
 ## 1. Objet
 
@@ -40,7 +40,7 @@ Boîtier destiné à contenir une carte **Orange Pi 4 Pro (A733)** avec refroidi
 Hauteur maximale avec rebord : 15,7 + 0,8 = **16,5 mm** au-dessus de la carte, pour les USB.
 Contrôle : 13,1 + 4,7 + 13,1 + 4,6 + 15,9 = 51,4 mm, soit 0,2 mm de plus que la mesure de référence (écart d'arrondi ou de mesure). Les découpes du boîtier se calent sur 51,2 mm, avec une tolérance d'impression.
 
-Les dissipateurs collés ne dépassent pas la hauteur des prises USB : le volume intérieur est dimensionné sur les prises (16,5 mm), pas sur les dissipateurs.
+Les dissipateurs collés ont une hauteur de **6 mm** (mesurée) et ne dépassent pas la hauteur des prises USB : le volume intérieur est dimensionné sur les prises (16,5 mm), pas sur les dissipateurs.
 
 ## 3. Exigences
 
@@ -76,12 +76,16 @@ Le ventilateur 40 mm, en 5 V, se branche sur le 40 broches (numérotation : broc
 | Commande de vitesse (PWM) — ventilateurs à 4 fils seulement | **broche 7** (PWM, signal 3,3 V) |
 | Mesure de vitesse (tachymètre, jaune) — facultatif | non raccordé |
 
+**Attention 3,3 V / 5 V** : les broches 1 et 17 sont en **3,3 V** ; les broches 2 et 4 sont en **5 V**. Le +5 V du ventilateur va sur la broche 4 (ou 2), jamais sur la broche 1 voisine. Le signal PWM de la broche 7 est en 3,3 V, il ne faut pas lui appliquer de 5 V.
+
 Un ventilateur à 2 fils (rouge et noir) tourne toujours à pleine vitesse ; le PWM n'est utile que s'il a un fil de commande.
 
 | Réf. | Exigence |
 |---|---|
 | F1 | Le ventilateur est alimenté par le 40 broches (broches 4 et 6). La commande par la broche 7 est facultative : elle n'est utilisée que si le ventilateur est à 4 fils. |
-| F2 | Le câble du ventilateur arrive jusqu'au 40 broches sans gêner les autres connecteurs ni le flux d'air. |
+| F2 | Le boîtier accepte **deux types de ventilateur 40 mm en 5 V** : à 2 fils (marche permanente, broches 4 et 6) ou à 4 fils (broches 4 et 6, plus la commande PWM broche 7). Les deux ont la même fixation et le même passage de câble. |
+| F3 | Le ventilateur à 4 fils n'est réglable qu'après activation du PWM dans la configuration de la carte et ajout d'un script de réglage selon la température (hors boîtier, à traiter plus tard). |
+| F4 | Le câble du ventilateur arrive jusqu'au 40 broches sans gêner les autres connecteurs ni le flux d'air. |
 
 ### 3.3 Antenne
 
@@ -101,8 +105,8 @@ Boîtier imprimé en 3D, fichiers sources fournis (format à décider).
 
 1. **Cotes restantes** : position des autres connecteurs (HDMI, USB-C, audio). Les cotes USB et RJ45 sont relevées (voir plus haut). « Hauteur au-dessus de la carte » s'entend du dessus du circuit imprimé jusqu'au sommet du connecteur (confirmé).
 2. **SSD** : le dépassement sous la carte est mesuré (4,5 mm). Reste à vérifier la longueur utile du SSD (2280 = 80 mm) par rapport à la longueur de la carte (89 mm).
-3. **Ventilateur** : taille retenue **40 mm**, en 5 V. Reste à préciser : épaisseur (10 mm ou 20 mm), nombre de fils (2, 3 ou 4) et entraxe des trous de fixation. S'il a 4 fils, la vitesse peut être commandée par la carte (broche 7).
-4. **Dissipateurs** : hauteur et surface réelles de ceux déjà collés.
+3. **Ventilateur** : taille retenue **40 mm**, en 5 V, à 2 ou 4 fils (les deux sont prévus). Reste à préciser : épaisseur (10 mm ou 20 mm) et entraxe des trous de fixation.
+4. **Dissipateurs** : hauteur mesurée, 6 mm. Reste à relever leur surface (longueur × largeur) et à confirmer si les 6 mm s'entendent au-dessus de la puce ou au-dessus du circuit imprimé.
 5. **Antenne** : type de connecteur de l'embase de la carte (U.FL probable, à confirmer) et antenne de remplacement (SMA ou RP-SMA, avec câble pigtail).
 6. **Matière et impression** : PLA, PETG ou ASA. La température intérieure peut dépasser la tenue du PLA.
 7. **Usage** : bureau, serveur, mur ou rack. Cela détermine l'orientation et les pieds.
