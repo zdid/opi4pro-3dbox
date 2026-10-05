@@ -34,7 +34,7 @@ SSD_Y1 = CARTE_W - (35.2 - SSD_LARG)   # bord côté HDMI
 SSD_Y0 = SSD_Y1 - SSD_LARG             # bord côté 40 broches
 # Support de vis du SSD (écrou sur la carte) : le SSD y repose à 3,9 mm sous la carte.
 SSD_APPUI = 3.9
-SSD_EP_PCB = 0.8        # épaisseur du circuit du SSD
+SSD_EP_PCB = 0.8        # épaisseur du circuit du SSD (valeur courante, non mesurable)
 SSD_CALE = True         # plot qui cale le bout du SSD par dessous (si pas de vis)
 SSD_CALE_D = 6.0        # diamètre au contact du SSD (surface prévue pour la tête de vis)
 SSD_CALE_BASE_D = 8.0   # diamètre à la base (plot conique, plus solide)
@@ -45,10 +45,10 @@ SSD_CALE_X = 87.6 - SSD_SUPPORT_R
 # Point le plus éloigné du support à 33,4 mm du grand côté du 40 broches.
 SSD_CALE_Y = 33.4 - SSD_SUPPORT_R
 # Le SSD repose sur l'épaulement du support ; le téton (Ø 3,1 environ) passe dans
-# l'encoche du SSD et dépasse dessous : la cale est creusée pour le loger.
+# l'encoche du SSD et arrive à son ras : la cale a un léger creux pour ne pas buter dessus.
 SSD_TETON_D = 3.1
 SSD_TETON_JEU = 0.25    # jeu radial autour du téton
-SSD_TETON_PROF = 3.0    # A MESURER : profondeur du logement (dépassement du téton sous le SSD)
+SSD_TETON_PROF = 0.5    # le téton arrive au ras du SSD : logement peu profond, par sécurité
 SSD_CALE_DECALAGE = 0.0 # décale la cale vers l'intérieur du SSD (mm, vers X décroissant) ;
                         # avec >= 4,5, cale pleine posée à côté de l'encoche, sans logement
 SSD_X0 = SSD_CALE_X - SSD_LONG   # pour la maquette (bout du SSD au centre de la cale)
