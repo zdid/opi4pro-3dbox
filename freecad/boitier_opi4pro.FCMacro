@@ -39,8 +39,10 @@ SSD_CALE = True         # plot qui cale le bout du SSD par dessous (si pas de vi
 SSD_CALE_D = 5.0        # diamètre au contact du SSD
 SSD_CALE_BASE_D = 7.0   # diamètre à la base (plot conique, plus solide)
 # Support de vis sur la carte : point le plus éloigné à 87,6 mm du petit côté sans USB.
-# La cale est centrée pour que son contact (Ø 5) s'arrête à cette cote.
+# La cale est centrée pour que son contact (Ø 5) s'arrête à ces cotes.
 SSD_CALE_X = 87.6 - SSD_CALE_D / 2
+# Point le plus éloigné du support à 33,4 mm du grand côté du 40 broches.
+SSD_CALE_Y = 33.4 - SSD_CALE_D / 2
 SSD_X0 = SSD_CALE_X - SSD_LONG   # pour la maquette (bout du SSD au centre de la cale)
 
 # Trous de fixation : Ø 3,0, entraxes 58 (X) x 49 (Y).
@@ -190,7 +192,7 @@ def construire_socle():
     if SSD_CALE:
         z0, z1 = Z_PLANCHER - 0.01, -(SSD_APPUI + SSD_EP_PCB)
         s = s.fuse(Part.makeCone(SSD_CALE_BASE_D / 2, SSD_CALE_D / 2, z1 - z0,
-                                 V(SSD_CALE_X, (SSD_Y0 + SSD_Y1) / 2, z0), V(0, 0, 1)))
+                                 V(SSD_CALE_X, SSD_CALE_Y, z0), V(0, 0, 1)))
     # Plots de la carte
     plots = union([cyl_z(x, y, PLOT_D, Z_PLANCHER - 0.01, 0) for x, y in TROUS])
     s = s.fuse(plots)
