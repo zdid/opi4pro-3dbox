@@ -1,0 +1,309 @@
+# -*- coding: utf-8 -*-
+# Boîtier Orange Pi 4 Pro — macro FreeCAD (testée avec FreeCAD 1.1)
+#
+# Construit le socle, le capot et une maquette simplifiée de la carte à partir
+# des cotes de CAHIER_DES_CHARGES.md. Toutes les cotes sont des paramètres
+# ci-dessous : corriger une valeur puis relancer la macro.
+#
+# Utilisation : FreeCAD > Macro > Macros... > Exécuter, ou en ligne de commande :
+#   freecadcmd boitier_opi4pro.FCMacro
+# Produit, à côté de la macro : boitier_opi4pro.FCStd, socle.stl, capot.stl.
+#
+# Repère (mm) :
+#   X : longueur de la carte. 0 = petit côté SANS USB, 89 = côté USB/RJ45.
+#   Y : largeur. 0 = grand côté du 40 broches, 55,7 = grand côté HDMI/USB-C/audio.
+#   Z : 0 = dessous du circuit imprimé de la carte, vers le haut.
+#
+# Cotes marquées « A MESURER » : valeurs supposées, à vérifier sur la carte.
+
+import os
+import FreeCAD as App
+import Part
+from FreeCAD import Vector as V
+
+# ---------------------------------------------------------------- carte
+CARTE_L = 89.0          # longueur du circuit imprimé
+CARTE_W = 55.7          # largeur du circuit imprimé
+CARTE_EP = 1.3          # épaisseur du circuit imprimé
+SSD_SOUS = 4.5          # dépassement du SSD sous la carte
+
+# Trous de fixation : Ø 3,0, entraxes 58 (X) x 49 (Y).
+# Hypothèse : les 6 mm « dans la longueur » sont pris depuis le petit côté
+# SANS USB (centre à 7,5 mm). A MESURER si doute.
+TROUS = [(7.5, 3.25), (65.5, 3.25), (7.5, 52.25), (65.5, 52.25)]
+
+# Côté USB/RJ45 (X = 89) : 51,2 mm de l'extérieur de la 1re USB à l'extérieur du RJ45,
+# hauteur max 16,5 au-dessus de la carte (rebord compris), dépassement 2,8.
+USB_Y0 = 2.25           # A MESURER : distance du bord 40 broches à la 1re prise USB
+USB_SPAN = 51.2
+USB_H = 16.5
+USB_REBORD = 0.8
+
+# Côté HDMI (Y = 55,7) : (nom, x début, x fin, hauteur carte incluse, dépassement,
+#                         taille de la fiche du câble (largeur, hauteur) pour le lamage)
+PRISES_Y = [
+    ("USB-C", 11.7, 20.5, 5.0, 1.4, (13.0, 8.5)),
+    ("HDMI", 27.8, 42.6, 7.3, 2.6, (22.0, 12.5)),
+    ("Audio", 54.2, 60.2, 6.5, 2.8, (11.0, 11.0)),
+]
+
+# microSD (sous la carte, petit côté sans USB) : de 7,8 à 18,9 depuis le bord 40 broches,
+# support 1,5 sous la carte, carte insérée qui dépasse de 3 mm.
+SD_Y0, SD_Y1 = 7.8, 18.9
+SD_SOUS = 1.5
+
+# Bouton POWER (petit côté sans USB) : rond Ø 2,1, extérieur à 48,8 du bord 40 broches,
+# dépasse de 0,2 mm du bord.
+PWR_Y = 48.8 - 2.1 / 2  # centre
+PWR_D = 2.1
+PWR_DEPASSE = 0.2
+PWR_Z = CARTE_EP + 1.0  # A MESURER : hauteur du centre du bouton
+
+# Microphone : Ø 5,1, angle petit côté sans USB / côté HDMI, dépasse de 0,3 des deux bords.
+MIC_D = 5.1
+MIC_DEPASSE = 0.3
+
+# ----------------------------------------------------------- ventilateur
+FAN = 40.0              # 40 x 40 x 10
+FAN_EP = 10.0
+FAN_ENTRAXE = 32.0
+FAN_X = 50.0            # centre du ventilateur, au-dessus du SoC et de la mémoire
+FAN_Y = CARTE_W / 2
+FAN_JEU_USB = 1.0       # jeu entre le sommet des prises USB et le dessous du ventilateur
+
+# ---------------------------------------------------------------- boîtier
+PAROI = 2.0             # épaisseur des parois
+JEU = 0.5               # jeu carte / paroi
+JEU_AIR = 3.0           # couloir d'air le long du côté 40 broches (descente vers le SSD)
+COULOIR_X = (12.0, 62.0)
+AIR_SOUS_SSD = 3.0      # espace sous le SSD
+FOND_EXT = 2.0          # double fond : plaque extérieure (trou de serrure)
+FOND_CAVITE = 3.5       #               logement de la tête de vis
+FOND_INT = 1.6          #               plancher intérieur
+SPLIT = CARTE_EP + 3.0  # plan de joint socle / capot (au-dessus de la carte)
+PLAFOND = 2.0           # épaisseur du dessus du capot
+PLOT_D = 6.0            # plots de la carte (vis M2,5)
+PLOT_AVANT_TROU = 2.2   # avant-trou pour vis M2,5 auto-taraudeuse dans le PLA
+BOSSAGE_D = 8.0         # bossages d'angle (vis M3 capot)
+VIS_M3_PASSAGE = 3.4
+VIS_M3_TETE = 6.5
+VIS_M3_AVANT_TROU = 2.6
+MINI_PAROI = 0.8        # épaisseur minimale laissée par les lamages
+
+# Fixation murale
+TROU_SERRURE = True     # option 1 : accroche sur une vis
+SERRURE_TETE = 8.5      # vis Ø 3,5 à 4, tête jusqu'à 8 mm
+SERRURE_FENTE = 4.3
+SERRURE_COURSE = 8.0
+OREILLES = False        # option 2 : pattes latérales vissées
+OREILLE_TROU = 4.5
+
+# Ventilation
+FENTES_BASSES = True    # sorties d'air sous la carte (côté HDMI et côté USB) : passage sur le SSD
+FENTES_HAUTES = False   # sorties d'air au-dessus de la carte (petit côté sans USB) : à essayer
+
+# ----------------------------------------------------------- calculs
+Z_PLANCHER = -(SSD_SOUS + AIR_SOUS_SSD)
+Z_BAS = Z_PLANCHER - FOND_INT - FOND_CAVITE - FOND_EXT
+Z_FAN_BAS = CARTE_EP + USB_H + FAN_JEU_USB
+Z_PLAFOND_INT = Z_FAN_BAS + FAN_EP
+Z_HAUT = Z_PLAFOND_INT + PLAFOND
+
+XI0, XI1 = -JEU, CARTE_L + JEU
+YI0, YI1 = -JEU, CARTE_W + JEU
+YI0_AIR = -JEU_AIR
+XO0, XO1 = XI0 - PAROI, XI1 + PAROI
+YO0, YO1 = YI0_AIR - PAROI, YI1 + PAROI
+
+
+def boite(x0, x1, y0, y1, z0, z1):
+    return Part.makeBox(x1 - x0, y1 - y0, z1 - z0, V(x0, y0, z0))
+
+
+def cyl_z(x, y, d, z0, z1):
+    return Part.makeCylinder(d / 2, z1 - z0, V(x, y, z0), V(0, 0, 1))
+
+
+def cyl_x(y, z, d, x0, x1):
+    return Part.makeCylinder(d / 2, x1 - x0, V(x0, y, z), V(1, 0, 0))
+
+
+def cyl_y(x, z, d, y0, y1):
+    return Part.makeCylinder(d / 2, y1 - y0, V(x, y0, z), V(0, 1, 0))
+
+
+def union(formes):
+    res = formes[0]
+    for f in formes[1:]:
+        res = res.fuse(f)
+    return res
+
+
+def centres_bossages():
+    d = 1.5
+    return [(XO0 - d, YO0 - d), (XO1 + d, YO0 - d), (XO0 - d, YO1 + d), (XO1 + d, YO1 + d)]
+
+
+def decoupes_communes():
+    """Ouvertures traversant le socle et le capot (prises)."""
+    d = []
+    # Côté USB / RJ45 : une fenêtre pour les 3 prises
+    d.append(boite(CARTE_L, XO1 + 1,
+                   USB_Y0 - USB_REBORD - JEU, USB_Y0 + USB_SPAN + USB_REBORD + JEU,
+                   CARTE_EP - JEU, CARTE_EP + USB_H + JEU))
+    # Côté HDMI : USB-C, HDMI, audio + lamages pour les fiches
+    for nom, x0, x1, h, dep, (fl, fh) in PRISES_Y:
+        d.append(boite(x0 - JEU, x1 + JEU, CARTE_W - 1, YO1 + 1, CARTE_EP - JEU, h + JEU))
+        y_lamage = max(YI1 + MINI_PAROI, CARTE_W + dep - 0.2)
+        if y_lamage < YO1:
+            xc, zc = (x0 + x1) / 2, (CARTE_EP + h) / 2
+            d.append(boite(xc - fl / 2, xc + fl / 2, y_lamage, YO1 + 1, zc - fh / 2, zc + fh / 2))
+    return d
+
+
+def construire_socle():
+    s = boite(XO0, XO1, YO0, YO1, Z_BAS, SPLIT)
+    s = s.fuse(union([cyl_z(x, y, BOSSAGE_D, Z_BAS, SPLIT) for x, y in centres_bossages()]))
+    # Cavité : la carte s'encastre, couloir d'air côté 40 broches
+    s = s.cut(boite(XI0, XI1, YI0, YI1, Z_PLANCHER, SPLIT + 1))
+    s = s.cut(boite(COULOIR_X[0], COULOIR_X[1], YI0_AIR, YI0 + 0.01, Z_PLANCHER, SPLIT + 1))
+    # Dégagement du micro (angle X=0 / Y=55,7)
+    mx, my = MIC_D / 2 - MIC_DEPASSE, CARTE_W - MIC_D / 2 + MIC_DEPASSE
+    s = s.cut(cyl_z(mx, my, MIC_D + 2 * JEU, CARTE_EP - 0.01, SPLIT + 1))
+    # Plots de la carte
+    plots = union([cyl_z(x, y, PLOT_D, Z_PLANCHER - 0.01, 0) for x, y in TROUS])
+    s = s.fuse(plots)
+    for x, y in TROUS:
+        s = s.cut(cyl_z(x, y, PLOT_AVANT_TROU, Z_PLANCHER, 0.1))
+    # Prises
+    for d in decoupes_communes():
+        s = s.cut(d)
+    # microSD : ouverture + creux pour saisir la carte
+    s = s.cut(boite(XO0 - 1, XI0 + 0.1, SD_Y0 - 1.5, SD_Y1 + 1.5, -SD_SOUS - 2, 0))
+    s = s.cut(boite(XO0 - 1, XO0 + 1.5, SD_Y0 - 4, SD_Y1 + 4, -SD_SOUS - 3.5, 0))
+    # Poussoir du bouton POWER : languette souple taillée dans la paroi X = 0
+    ty0, ty1 = PWR_Y - 3, PWR_Y + 3
+    tz0 = Z_PLANCHER + 1.5
+    fente = 0.8
+    s = s.cut(boite(XO0 - 1, XI0 + 0.1, ty0 - fente, ty0, tz0, SPLIT + 1))
+    s = s.cut(boite(XO0 - 1, XI0 + 0.1, ty1, ty1 + fente, tz0, SPLIT + 1))
+    s = s.cut(boite(XI0 - 0.8, XI0 + 0.1, ty0, ty1, tz0, SPLIT + 1))   # languette amincie à 1,2
+    s = s.cut(boite(XO0 - 1, XI0 + 0.1, ty0 - fente, ty1 + fente, SPLIT - 0.5, SPLIT + 1))  # haut libre
+    s = s.fuse(cyl_x(PWR_Y, PWR_Z, 2.0, XI0 - 0.8, -PWR_DEPASSE - 0.3))  # téton intérieur
+    s = s.fuse(cyl_x(PWR_Y, PWR_Z, 4.0, XO0 - 1.0, XO0 + 0.01))         # téton extérieur
+    # Fentes d'aération sous la carte
+    if FENTES_BASSES:
+        z0, z1 = Z_PLANCHER + 1, -1.0
+        x = 6.0
+        while x < CARTE_L - 6:
+            s = s.cut(boite(x, x + 2, YI1 - 0.1, YO1 + 1, z0, z1))
+            x += 5.0
+        y = 6.0
+        while y < CARTE_W - 6:
+            s = s.cut(boite(XI1 - 0.1, XO1 + 1, y, y + 2, z0, z1))
+            y += 5.0
+    # Vis du capot : passage M3 + lamage de tête par dessous
+    for x, y in centres_bossages():
+        s = s.cut(cyl_z(x, y, VIS_M3_PASSAGE, Z_BAS - 1, SPLIT + 1))
+        s = s.cut(cyl_z(x, y, VIS_M3_TETE, Z_BAS - 1, Z_BAS + 3.5))
+    # Double fond : trou de serrure + logement fermé de la tête de vis
+    if TROU_SERRURE:
+        kx, ky = CARTE_L / 2, CARTE_W / 2
+        s = s.cut(cyl_z(kx, ky, SERRURE_TETE, Z_BAS - 1, Z_BAS + FOND_EXT + 0.01))
+        s = s.cut(boite(kx - SERRURE_FENTE / 2, kx + SERRURE_FENTE / 2, ky - SERRURE_COURSE, ky,
+                        Z_BAS - 1, Z_BAS + FOND_EXT + 0.01))
+        s = s.cut(cyl_z(kx, ky - SERRURE_COURSE, SERRURE_FENTE, Z_BAS - 1, Z_BAS + FOND_EXT + 0.01))
+        s = s.cut(boite(kx - SERRURE_TETE / 2 - 1, kx + SERRURE_TETE / 2 + 1,
+                        ky - SERRURE_COURSE - SERRURE_TETE / 2 - 1, ky + SERRURE_TETE / 2 + 1,
+                        Z_BAS + FOND_EXT, Z_BAS + FOND_EXT + FOND_CAVITE))
+    if OREILLES:
+        yc = CARTE_W / 2
+        for xa, xb in ((XO0 - 12, XO0 + 0.5), (XO1 - 0.5, XO1 + 12)):
+            s = s.fuse(boite(xa, xb, yc - 8, yc + 8, Z_BAS, Z_BAS + 3))
+            xt = xa + 6 if xa < XO0 else xb - 6
+            s = s.cut(cyl_z(xt, yc, OREILLE_TROU, Z_BAS - 1, Z_BAS + 4))
+    return s.removeSplitter()
+
+
+def construire_capot():
+    c = boite(XO0, XO1, YO0, YO1, SPLIT, Z_HAUT)
+    c = c.fuse(union([cyl_z(x, y, BOSSAGE_D, SPLIT, Z_HAUT) for x, y in centres_bossages()]))
+    c = c.cut(boite(XI0, XI1, YI0_AIR, YI1, SPLIT - 1, Z_PLAFOND_INT))
+    for d in decoupes_communes():
+        c = c.cut(d)
+    for x, y in centres_bossages():
+        c = c.cut(cyl_z(x, y, VIS_M3_AVANT_TROU, SPLIT - 1, SPLIT + 12))
+    # Ventilateur sous le dessus : 4 trous M3 (légèrement oblongs) + grille d'entrée d'air
+    e = FAN_ENTRAXE / 2
+    for sx in (-1, 1):
+        for sy in (-1, 1):
+            x, y = FAN_X + sx * e, FAN_Y + sy * e
+            for k in (-0.5, 0.5):
+                c = c.cut(cyl_z(x + sx * k * 0.707, y + sy * k * 0.707, VIS_M3_PASSAGE,
+                                Z_PLAFOND_INT - 1, Z_HAUT + 1))
+    pas = 4.5
+    r_grille = FAN / 2 - 2
+    j = 0
+    y = FAN_Y - r_grille
+    while y <= FAN_Y + r_grille:
+        x = FAN_X - r_grille + (pas / 2 if j % 2 else 0)
+        while x <= FAN_X + r_grille:
+            if (x - FAN_X) ** 2 + (y - FAN_Y) ** 2 <= (r_grille - 1.5) ** 2:
+                c = c.cut(cyl_z(x, y, 3.0, Z_PLAFOND_INT - 1, Z_HAUT + 1))
+            x += pas
+        y += pas * 0.866
+        j += 1
+    if FENTES_HAUTES:
+        y = 8.0
+        while y < CARTE_W - 12:
+            c = c.cut(boite(XO0 - 1, XI0 + 0.1, y, y + 2, CARTE_EP + 6, CARTE_EP + 14))
+            y += 5.0
+    return c.removeSplitter()
+
+
+def construire_maquette():
+    """Carte, SSD, prises et ventilateur simplifiés, pour contrôler l'encombrement."""
+    m = [boite(0, CARTE_L, 0, CARTE_W, 0, CARTE_EP),
+         boite(2, 82, 20, 42, -SSD_SOUS, 0),
+         boite(CARTE_L - 17, CARTE_L + 2.8, USB_Y0, USB_Y0 + USB_SPAN, CARTE_EP, CARTE_EP + USB_H),
+         boite(FAN_X - FAN / 2, FAN_X + FAN / 2, FAN_Y - FAN / 2, FAN_Y + FAN / 2, Z_FAN_BAS, Z_PLAFOND_INT),
+         cyl_z(MIC_D / 2 - MIC_DEPASSE, CARTE_W - MIC_D / 2 + MIC_DEPASSE, MIC_D, CARTE_EP, CARTE_EP + 1.5),
+         boite(-3, 12, SD_Y0, SD_Y1, -SD_SOUS, 0)]
+    for nom, x0, x1, h, dep, _ in PRISES_Y:
+        m.append(boite(x0, x1, CARTE_W - 10, CARTE_W + dep, CARTE_EP, h))
+    return union(m)
+
+
+def main():
+    doc = App.newDocument("boitier_opi4pro")
+    pieces = {}
+    for nom, fn in (("Socle", construire_socle), ("Capot", construire_capot),
+                    ("Maquette_carte", construire_maquette)):
+        obj = doc.addObject("Part::Feature", nom)
+        obj.Shape = fn()
+        pieces[nom] = obj
+    doc.recompute()
+    try:
+        dossier = os.path.dirname(os.path.abspath(__file__))
+    except NameError:
+        dossier = App.getUserMacroDir(True)
+    doc.saveAs(os.path.join(dossier, "boitier_opi4pro.FCStd"))
+    import Mesh
+    import MeshPart
+    for nom in ("Socle", "Capot"):
+        mesh = MeshPart.meshFromShape(Shape=pieces[nom].Shape, LinearDeflection=0.05,
+                                      AngularDeflection=0.2, Relative=False)
+        mesh.write(os.path.join(dossier, nom.lower() + ".stl"))
+    for nom in ("Socle", "Capot"):
+        sh = pieces[nom].Shape
+        bb = sh.BoundBox
+        App.Console.PrintMessage("%s : valide=%s, volume=%.0f mm3, %.1f x %.1f x %.1f mm\n"
+                                 % (nom, sh.isValid(), sh.Volume, bb.XLength, bb.YLength, bb.ZLength))
+    if App.GuiUp:
+        import FreeCADGui
+        FreeCADGui.SendMsgToActiveView("ViewFit")
+        FreeCADGui.activeDocument().activeView().viewAxonometric()
+    return doc
+
+
+main()
