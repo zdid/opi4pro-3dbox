@@ -26,6 +26,18 @@ CARTE_L = 89.0          # longueur du circuit imprimé
 CARTE_W = 55.7          # largeur du circuit imprimé
 CARTE_EP = 1.3          # épaisseur du circuit imprimé
 SSD_SOUS = 4.5          # dépassement du SSD sous la carte
+# SSD M.2 2280 : 22 de large, 84 de long avec le connecteur ; son bord le plus éloigné
+# du côté HDMI est à 35,2 mm de ce côté (SSD décentré).
+SSD_LARG = 22.0
+SSD_LONG = 84.0
+SSD_Y1 = CARTE_W - (35.2 - SSD_LARG)   # bord côté HDMI
+SSD_Y0 = SSD_Y1 - SSD_LARG             # bord côté 40 broches
+SSD_X0 = 1.5            # A MESURER : distance du petit côté sans USB au bout du connecteur M.2
+# Support de vis du SSD (écrou sur la carte) : le SSD y repose à 3,9 mm sous la carte.
+SSD_APPUI = 3.9
+SSD_EP_PCB = 0.8        # épaisseur du circuit du SSD
+SSD_CALE = True         # plot qui cale le bout du SSD par dessous (si pas de vis)
+SSD_CALE_D = 6.0
 
 # Trous de fixation : Ø 3,0, entraxes 58 (X) x 49 (Y).
 # Hypothèse : les 6 mm « dans la longueur » sont pris depuis le petit côté
@@ -170,6 +182,10 @@ def construire_socle():
     # Dégagement du micro (angle X=0 / Y=55,7)
     mx, my = MIC_D / 2 - MIC_DEPASSE, CARTE_W - MIC_D / 2 + MIC_DEPASSE
     s = s.cut(cyl_z(mx, my, MIC_D + 2 * JEU, CARTE_EP - 0.01, SPLIT + 1))
+    # Cale du SSD : plot sous le bout du SSD, à l'endroit de la vis M.2
+    if SSD_CALE:
+        s = s.fuse(cyl_z(SSD_X0 + SSD_LONG - 1.5, (SSD_Y0 + SSD_Y1) / 2, SSD_CALE_D,
+                         Z_PLANCHER - 0.01, -(SSD_APPUI + SSD_EP_PCB)))
     # Plots de la carte
     plots = union([cyl_z(x, y, PLOT_D, Z_PLANCHER - 0.01, 0) for x, y in TROUS])
     s = s.fuse(plots)
@@ -264,7 +280,7 @@ def construire_capot():
 def construire_maquette():
     """Carte, SSD, prises et ventilateur simplifiés, pour contrôler l'encombrement."""
     m = [boite(0, CARTE_L, 0, CARTE_W, 0, CARTE_EP),
-         boite(2, 82, 20, 42, -SSD_SOUS, 0),
+         boite(SSD_X0, SSD_X0 + SSD_LONG, SSD_Y0, SSD_Y1, -SSD_SOUS, 0),
          boite(CARTE_L - 17, CARTE_L + 2.8, USB_Y0, USB_Y0 + USB_SPAN, CARTE_EP, CARTE_EP + USB_H),
          boite(FAN_X - FAN / 2, FAN_X + FAN / 2, FAN_Y - FAN / 2, FAN_Y + FAN / 2, Z_FAN_BAS, Z_PLAFOND_INT),
          cyl_z(MIC_D / 2 - MIC_DEPASSE, CARTE_W - MIC_D / 2 + MIC_DEPASSE, MIC_D, CARTE_EP, CARTE_EP + 1.5),

@@ -1,6 +1,6 @@
 # Boîtier Orange Pi 4 Pro — fichiers FreeCAD
 
-Première version (v1) construite à partir de `CAHIER_DES_CHARGES.md` (v0.40).
+Première version (v1) construite à partir de `CAHIER_DES_CHARGES.md` (v0.41).
 
 | Fichier | Rôle |
 |---|---|
@@ -12,6 +12,7 @@ Relancer la macro (FreeCAD > Macro > Macros… > Exécuter) régénère les troi
 
 ## Ce que fait la v1
 
+- **Cale du SSD** : un plot sous le bout du SSD, à l'endroit de la vis M.2, le maintient quand il n'est pas vissé (`SSD_CALE`).
 - **Socle** : la carte s'encastre dedans (jeu 0,5 mm) et se visse sur 4 plots. Les plots laissent 3 mm d'air sous le SSD. Ouvertures pour les prises, la microSD avec un creux pour la saisir, et le micro. Un poussoir à languette souple pour le bouton POWER. Un double fond avec un trou de serrure pour accrocher le boîtier à une vis.
 - **Capot** : ventilateur 40 × 10 mm vissé sous le dessus (entraxe 32 mm, trous légèrement oblongs), grille d'entrée d'air au-dessus, ouvertures des prises.
 - **Circulation d'air** : le ventilateur souffle vers l'intérieur, sur les dissipateurs. Un couloir de 3 mm le long du côté 40 broches fait descendre l'air sous la carte. L'air passe sur le SSD et sort par des fentes basses côté HDMI et côté USB.
@@ -37,5 +38,4 @@ Dimensions hors tout : 105 × 74 × 45 mm, bossages d'angle compris.
 
 | Paramètre | Valeur supposée | Quoi mesurer |
 |---|---|---|
-| `TROUS` | centres à 7,5 mm du petit côté sans USB | Confirmer que les 6 mm « dans la longueur » partent bien du petit côté sans USB |
-| SSD (maquette) | x 2-82, y 20-42 | Emplacement réel du SSD (sert seulement au contrôle d'encombrement) |
+| `SSD_X0` | 1,5 mm | Distance entre le petit côté sans USB et le bout du connecteur M.2 : place la cale du SSD |
