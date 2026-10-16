@@ -1,6 +1,6 @@
 # Cahier des charges — boîtier pour Orange Pi 4 Pro
 
-Version : 0.49 (brouillon) — 2026-10-05
+Version : 0.50 (brouillon) — 2026-10-05
 
 ## 1. Objet
 
@@ -164,7 +164,7 @@ L'antenne est mise de côté pour l'instant : les exigences ci-dessous restent v
 
 ### 3.4 Fabrication
 
-Boîtier imprimé en 3D en **PLA** (seule matière disponible). Fichiers sources au format **FreeCAD** (logiciel de l'utilisateur), avec export STL pour l'impression. Le PLA ramollit vers 55-60 °C : la conception évite tout contact entre le boîtier et les dissipateurs ou le SSD, et la température intérieure est mesurée lors des essais (§5).
+Boîtier imprimé en 3D en **PETG** (décision de l'utilisateur, remplace le PLA). Fichiers sources au format **FreeCAD** (logiciel de l'utilisateur), avec export STL pour l'impression. Le PETG tient la chaleur mieux que le PLA (ramollissement vers 75-80 °C) ; la conception évite quand même tout contact entre le boîtier et les dissipateurs ou le SSD, et la température intérieure est mesurée lors des essais (§5).
 
 ## 4. Points ouverts
 
@@ -176,7 +176,7 @@ Toutes les cotes nécessaires à la conception sont relevées (§2). Restent :
 4. **Poussière** : filtre sur l'entrée d'air, à décider après les premiers essais.
 5. **Sens de l'air** : soufflage vers l'intérieur dans la v1, à valider par les essais (§5).
 
-Décidé : PLA ; capot vissé (M3), carte vissée (M2,5) ; boîtier posé ou fixé au mur (vis Ø 3,5 ou 4, tête jusqu'à 8 mm) ; fichiers FreeCAD (dossier `freecad/`).
+Décidé : PETG ; capot vissé (M3), carte vissée (M2,5) ; boîtier posé ou fixé au mur (vis Ø 3,5 ou 4, tête jusqu'à 8 mm) ; fichiers FreeCAD (dossier `freecad/`).
 
 ## 5. Validation prévue
 

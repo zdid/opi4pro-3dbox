@@ -107,7 +107,7 @@ FOND_INT = 1.6          #               plancher intérieur
 SPLIT = CARTE_EP + 5.0  # plan de joint socle / capot (au-dessus de la carte et du bouton POWER)
 PLAFOND = 2.0           # épaisseur du dessus du capot
 PLOT_D = 6.0            # plots de la carte (vis M2,5)
-PLOT_AVANT_TROU = 2.2   # avant-trou pour vis M2,5 auto-taraudeuse dans le PLA
+PLOT_AVANT_TROU = 2.2   # avant-trou pour vis M2,5 auto-taraudeuse dans le PETG
 LANGUETTE_EP = 1.2      # épaisseur de la languette du bouton POWER (plus fine = plus souple)
 BOSSAGE_D = 8.0         # bossages d'angle (vis M3 capot)
 VIS_M3_PASSAGE = 3.4                    # trou de passage M3

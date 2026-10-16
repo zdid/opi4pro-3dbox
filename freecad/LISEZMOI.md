@@ -27,14 +27,15 @@ Dimensions hors tout : 105 × 74 × 45 mm, bossages d'angle compris.
 
 | Usage | Vis |
 |---|---|
-| Carte sur le socle | 4 × M2,5 × 8, auto-taraudeuses dans le PLA |
+| Carte sur le socle | 4 × M2,5 × 8, auto-taraudeuses dans le PETG |
 | Capot sur le socle, vissé par dessous | 4 × M3 × 25 |
 | Ventilateur sous le capot | 4 × M3 (longueur selon le ventilateur) + écrous |
 | Mur | 1 vis Ø 3,5 à 4 mm, tête de 8 mm maximum |
 
-## Impression (PLA)
+## Impression (PETG)
 
 - Socle à plat, fond sur le plateau. Capot retourné, dessus sur le plateau. Aucun support n'est nécessaire.
+- Le PETG fait moins bien les ponts que le PLA : le plus long (≈ 14 mm, au-dessus de l'ouverture microSD) peut légèrement s'affaisser sans gêner. Ventilation du ventilateur de pièce réduite pour le PETG.
 - La languette du bouton POWER fait 1,2 mm d'épaisseur (`LANGUETTE_EP`). Si elle est trop raide, la réduire ; si elle casse, l'augmenter.
 
 ## Variables d'ajustement

@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Boîtier imprimé en 3D (PLA) pour une carte **Orange Pi 4 Pro** avec SSD M.2 au dos et ventilateur 40 × 10 mm dans le capot.
+Boîtier imprimé en 3D (PETG) pour une carte **Orange Pi 4 Pro** avec SSD M.2 au dos et ventilateur 40 × 10 mm dans le capot.
 
 ## Fichiers de référence
 
@@ -19,8 +19,8 @@ Attention aux références des mesures de l'utilisateur : certaines hauteurs son
 
 ## Utilisateur
 
-- Échanges en **français**. Il utilise **FreeCAD 1.1.1** et **Cura**, imprime en **PLA uniquement**.
-- Il mesure lui-même les cotes sur la carte : quand une mesure est ambiguë (référence, côté), demander plutôt que supposer. Une valeur supposée est marquée « A MESURER » dans la macro et listée dans `LISEZMOI.md`.
+- Échanges en **français**. Outils de l'utilisateur : **FreeCAD 1.1.1** et **Cura** ; le boîtier est imprimé en **PETG** (le PLA a d'abord été envisagé).
+- Les cotes sont mesurées par l'utilisateur sur la carte : quand une mesure est ambiguë (référence, côté), demander plutôt que supposer. Une valeur supposée est marquée « A MESURER » dans la macro et listée dans `LISEZMOI.md`.
 - Ne pas affirmer une donnée externe (fiche technique, entraxe…) sans l'avoir vérifiée ; dire ce qui est vérifié et ce qui ne l'est pas.
 
 ## Git
