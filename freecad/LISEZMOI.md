@@ -35,8 +35,37 @@ Dimensions hors tout : 105 × 74 × 45 mm, bossages d'angle compris.
 ## Impression (PETG)
 
 - Socle à plat, fond sur le plateau. Capot retourné, dessus sur le plateau. Aucun support n'est nécessaire.
-- Le PETG fait moins bien les ponts que le PLA : le plus long (≈ 14 mm, au-dessus de l'ouverture microSD) peut légèrement s'affaisser sans gêner. Ventilation du ventilateur de pièce réduite pour le PETG.
+- Le PETG fait moins bien les ponts que le PLA : le plus long (≈ 14 mm, au-dessus de l'ouverture microSD) peut légèrement s'affaisser sans gêner.
 - La languette du bouton POWER fait 1,2 mm d'épaisseur (`LANGUETTE_EP`). Si elle est trop raide, la réduire ; si elle casse, l'augmenter.
+
+### Réglages Cura de départ (Ender 5, PETG)
+
+Valeurs courantes à ajuster : les plages indiquées sur la bobine font foi. Faire d'abord un petit essai (cube de 20 mm ou tour de température). Partir du profil « Generic PETG » de Cura.
+
+**Avant d'imprimer**
+- Sécher le filament s'il file, crépite ou fait des bulles : 4 à 6 h à 65 °C.
+- Imprimante sous tente : le PETG n'a pas besoin d'enceinte chaude. Laisser la tente entrouverte pour rester sous 35-40 °C, sinon la tête d'origine de l'Ender 5 risque de se boucher (« heat creep »).
+
+| Réglage | Valeur |
+|---|---|
+| Buse | 235 °C (230-245) ; 240 °C pour la 1re couche. Tête d'origine à tube PTFE : ne pas dépasser 240 °C |
+| Plateau | 80 °C (75-85) |
+| 1re couche | ne pas l'écraser : offset Z remonté de 0,05 à 0,1 mm par rapport au PLA |
+| Adhérence | verre ou PEI lisse : fine couche de colle en bâton (anti-adhérent, le PETG peut arracher le verre) ; PEI texturé : rien. Pas de bordure nécessaire |
+| Vitesse | 40-50 mm/s ; 1re couche 20 mm/s |
+| Ventilateur de pièce | 0 % sur les 2-3 premières couches, puis 30-50 % ; ponts 100 % |
+| Temps minimal par couche | 10 s |
+| Rétraction (extrudeur déporté, Bowden) | 5-6 mm à 30-40 mm/s ; extrudeur direct (Ender 5 S1) : 0,8-1,5 mm |
+| Z-hop | désactivé (augmente les fils) |
+| Combing | « Pas dans la surface extérieure » |
+| Hauteur de couche | 0,2 mm |
+| Parois | 3 (1,2 mm), pour la tenue des vis |
+| Dessus / dessous | 5 couches |
+| Remplissage | 20-25 %, gyroïde |
+| Supports | aucun |
+| Débit | 95-100 % |
+
+**Si ça file** : baisser la buse de 5 °C, augmenter la rétraction de 0,5 mm, vérifier que le filament est sec.
 
 ## Variables d'ajustement
 
