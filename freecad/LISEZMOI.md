@@ -1,6 +1,6 @@
 # Boîtier Orange Pi 4 Pro — fichiers FreeCAD
 
-Première version (v1) construite à partir de `CAHIER_DES_CHARGES.md` (v0.47).
+Première version (v1) construite à partir de `CAHIER_DES_CHARGES.md` (v0.50).
 
 | Fichier | Rôle |
 |---|---|
