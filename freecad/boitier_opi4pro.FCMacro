@@ -53,9 +53,8 @@ SSD_CALE_DECALAGE = 0.0 # décale la cale vers l'intérieur du SSD (mm, vers X d
                         # avec >= 4,5, cale pleine posée à côté de l'encoche, sans logement
 SSD_X0 = SSD_CALE_X - SSD_LONG   # pour la maquette (bout du SSD au centre de la cale)
 
-# Trous de fixation : Ø 3,0, entraxes 58 (X) x 49 (Y).
-# Hypothèse : les 6 mm « dans la longueur » sont pris depuis le petit côté
-# SANS USB (centre à 7,5 mm). A MESURER si doute.
+# Trous de fixation : Ø 3,0, entraxes 58 (X) x 49 (Y), centres à 7,5 mm du petit
+# côté sans USB et à 3,25 mm du bord 40 broches (mesuré et confirmé).
 TROUS = [(7.5, 3.25), (65.5, 3.25), (7.5, 52.25), (65.5, 52.25)]# centres (X, Y)
 
 # Côté USB/RJ45 (X = 89) : 51,2 mm de l'extérieur de la 1re USB à l'extérieur du RJ45,
@@ -120,6 +119,7 @@ SPLIT = CARTE_EP + 5.0  # plan de joint socle / capot (au-dessus de la carte et 
 PLAFOND = 2.0           # épaisseur du dessus du capot
 PLOT_D = 6.0            # plots de la carte (vis M2,5)
 PLOT_AVANT_TROU = 2.2   # avant-trou pour vis M2,5 auto-taraudeuse dans le PLA
+LANGUETTE_EP = 1.2      # épaisseur de la languette du bouton POWER (plus fine = plus souple)
 BOSSAGE_D = 8.0         # bossages d'angle (vis M3 capot)
 VIS_M3_PASSAGE = 3.4                    # trou de passage M3
 VIS_M3_TETE = 6.5                       # lamage de tête M3 (sous le socle)
@@ -266,9 +266,9 @@ def construire_socle():
     fente = 0.8
     s = s.cut(boite(XO0 - 1, XI0 + 0.1, ty0 - fente, ty0, tz0, SPLIT + 1))
     s = s.cut(boite(XO0 - 1, XI0 + 0.1, ty1, ty1 + fente, tz0, SPLIT + 1))
-    s = s.cut(boite(XI0 - 0.8, XI0 + 0.1, ty0, ty1, tz0, SPLIT + 1))   # languette amincie à 1,2
+    s = s.cut(boite(XO0 + LANGUETTE_EP, XI0 + 0.1, ty0, ty1, tz0, SPLIT + 1))  # languette amincie
     s = s.cut(boite(XO0 - 1, XI0 + 0.1, ty0 - fente, ty1 + fente, SPLIT - 0.5, SPLIT + 1))  # haut libre
-    s = s.fuse(cyl_x(PWR_Y, PWR_Z, 2.0, XI0 - 0.8, -PWR_DEPASSE - 0.3))  # téton intérieur
+    s = s.fuse(cyl_x(PWR_Y, PWR_Z, 2.0, XO0 + LANGUETTE_EP - 0.01, -PWR_DEPASSE - 0.3))  # téton intérieur
     s = s.fuse(cyl_x(PWR_Y, PWR_Z, 4.0, XO0 - 1.0, XO0 + 0.01))         # téton extérieur
     # Fentes d'aération sous la carte
     if FENTES_BASSES:

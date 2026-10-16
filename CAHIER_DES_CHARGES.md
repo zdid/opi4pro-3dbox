@@ -1,6 +1,6 @@
 # Cahier des charges — boîtier pour Orange Pi 4 Pro
 
-Version : 0.47 (brouillon) — 2026-10-05
+Version : 0.48 (brouillon) — 2026-10-05
 
 ## 1. Objet
 
@@ -72,7 +72,7 @@ Empilement vertical (depuis le dessous du SSD) :
 | Dessous de la carte | 4,5 mm |
 | Dessus de la carte | 5,8 mm |
 | Sommet des prises USB avec rebord (16,5 mm au-dessus de la carte) | 22,3 mm |
-| Dessus du ventilateur de 10 mm posé au ras des prises USB | 32,3 mm |
+| Dessus du ventilateur de 10 mm posé au ras des prises USB | 32,3 mm (33,3 mm dans la v1, avec 1 mm de jeu au-dessus des USB) |
 
 Hauteur intérieure minimale, sans jeu ni parois : **32,3 mm**.
 
@@ -92,8 +92,8 @@ Les dissipateurs collés ont une hauteur de **6 mm** (mesurée) et ne dépassent
 | C3 | Un SSD M.2 2280 NVMe est enfiché à l'arrière de la carte, sans radiateur et à quelques millimètres seulement du circuit imprimé : le boîtier ménage l'espace et le flux d'air nécessaires. |
 | C4 | Le ventilateur est fixé **à l'intérieur du capot** (sous le dessus du capot), pas sur la carte. |
 | C5 | La fente microSD (face arrière) reste accessible sans démonter le boîtier : ouverture dans la paroi du socle, de 7,8 à 18,9 mm depuis le grand côté du 40 broches, avec de quoi saisir la carte qui dépasse de 3 mm. |
-| C6 | Les prises HDMI, USB-C et audio ne dépassent du bord de la carte que de 1,4 à 2,8 mm. Autour de chaque ouverture, la paroi est **amincie localement** (lamage côté extérieur) pour que la fiche du câble s'enfonce complètement sans buter contre la paroi. Les lamages acceptent les fiches **les plus courantes du commerce** (dimensions à fixer à la conception, avec marge). |
-| C7 | Le bouton **POWER** (rond, Ø 2,1 mm) reste actionnable de l'extérieur par un **poussoir intégré au boîtier** : une languette souple imprimée dans la paroi, avec un téton qui dépasse légèrement de la carcasse et vient appuyer sur le bouton. |
+| C6 | Les prises HDMI, USB-C et audio ne dépassent du bord de la carte que de 1,4 à 2,8 mm. Autour de chaque ouverture, la paroi est **amincie localement** (lamage côté extérieur) pour que la fiche du câble s'enfonce complètement sans buter contre la paroi. Les lamages acceptent les fiches **les plus courantes du commerce** : v1 dimensionnée pour des fiches de 13 × 8,5 mm (USB-C), 22 × 12,5 mm (HDMI) et 11 mm (jack). |
+| C7 | Le bouton **POWER** (rond, Ø 2,1 à 2,2 mm) reste actionnable de l'extérieur par un **poussoir intégré au boîtier** : une languette souple imprimée dans la paroi, avec un téton qui dépasse légèrement de la carcasse et vient appuyer sur le bouton. |
 
 ### 3.1 bis Socle
 
@@ -123,7 +123,7 @@ Les dissipateurs collés ont une hauteur de **6 mm** (mesurée) et ne dépassent
 | R1 | L'air circule dans tout le volume intérieur et refroidit à la fois la carte (puces avec dissipateurs) et le SSD, qui n'a pas de radiateur. |
 | R2 | Le flux d'air balaie les deux faces de l'ensemble carte + SSD, pas seulement la face supérieure de la carte. |
 | R3 | Les ouvertures d'entrée et de sortie sont placées pour éviter qu'une zone reste sans circulation d'air. |
-| R4 | Le SSD, à quelques millimètres du circuit imprimé, n'est guère atteint par un flux venant d'au-dessus des dissipateurs : le boîtier est en deux parties (haut et bas) séparées par des ouvertures latérales le long de la carte, qui laissent passer l'air sur les deux faces. |
+| R4 | Le SSD, à quelques millimètres du circuit imprimé, n'est guère atteint par un flux venant d'au-dessus des dissipateurs : l'air doit être conduit sous la carte. Solution v1 : un couloir de 3 mm le long du côté 40 broches fait descendre l'air sous la carte, et des fentes basses (sous la carte, côtés HDMI et USB) l'obligent à passer sur le SSD avant de sortir. |
 | R5 | Ces ouvertures sont placées en tenant compte des connecteurs : aucune fente ne gêne une fiche. |
 | R6 | Le sens du flux (aspiration ou soufflage) est tranché par essai (§5). Le boîtier permet de monter le ventilateur dans les deux sens. |
 

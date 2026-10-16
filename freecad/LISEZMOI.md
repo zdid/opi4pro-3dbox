@@ -35,7 +35,7 @@ Dimensions hors tout : 105 × 74 × 45 mm, bossages d'angle compris.
 ## Impression (PLA)
 
 - Socle à plat, fond sur le plateau. Capot retourné, dessus sur le plateau. Aucun support n'est nécessaire.
-- La languette du bouton POWER fait 1,2 mm d'épaisseur. Si elle est trop raide ou cassante, réduire son épaisseur dans la macro.
+- La languette du bouton POWER fait 1,2 mm d'épaisseur (`LANGUETTE_EP`). Si elle est trop raide, la réduire ; si elle casse, l'augmenter.
 
 ## Variables d'ajustement
 
@@ -60,6 +60,7 @@ Pour les modifier :
 | `JEU` | 0,5 | Jeu entre la carte et les parois (augmenter si la carte force) |
 | `PAROI` | 2,0 | Épaisseur des parois |
 | `PLOT_AVANT_TROU` | 2,2 | Avant-trou des vis M2,5 de la carte |
+| `LANGUETTE_EP` | 1,2 | Épaisseur de la languette du bouton POWER (plus fine = plus souple) |
 | `VIS_M3_AVANT_TROU` | 2,6 | Avant-trou des vis M3 du capot |
 | `FAN_X`, `FAN_Y` | 50 ; 27,85 | Position du ventilateur au-dessus de la carte |
 | `FAN_JEU_USB` | 1,0 | Jeu entre le sommet des prises USB et le ventilateur |
