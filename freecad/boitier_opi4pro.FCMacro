@@ -32,26 +32,15 @@ SSD_LARG = 22.0                         # largeur du SSD
 SSD_LONG = 84.0                         # longueur du SSD, connecteur compris
 SSD_Y1 = CARTE_W - (35.2 - SSD_LARG)   # bord côté HDMI
 SSD_Y0 = SSD_Y1 - SSD_LARG             # bord côté 40 broches
-# Support de vis du SSD (écrou sur la carte) : le SSD y repose à 3,9 mm sous la carte.
-SSD_APPUI = 3.9                         # hauteur de l'épaulement du support sous la carte
-SSD_EP_PCB = 0.8        # épaisseur du circuit du SSD (valeur courante, non mesurable)
-SSD_CALE = True         # plot qui cale le bout du SSD par dessous (si pas de vis)
-SSD_CALE_D = 6.0        # diamètre au contact du SSD (surface prévue pour la tête de vis)
-SSD_CALE_BASE_D = 8.0   # diamètre à la base (plot conique, plus solide)
-# Support de vis sur la carte : point le plus éloigné à 87,6 mm du petit côté sans USB.
-# Centre du support (téton) : cotes du point le plus éloigné moins un rayon de 2,5 mm.
-SSD_SUPPORT_R = 2.5     # A MESURER si besoin : rayon extérieur du support sur la carte
-SSD_CALE_X = 87.6 - SSD_SUPPORT_R       # centre de la cale en X
-# Point le plus éloigné du support à 33,4 mm du grand côté du 40 broches.
-SSD_CALE_Y = 33.4 - SSD_SUPPORT_R       # centre de la cale en Y
-# Le SSD repose sur l'épaulement du support ; le téton (Ø 3,1 environ) passe dans
-# l'encoche du SSD et arrive à son ras : la cale a un léger creux pour ne pas buter dessus.
-SSD_TETON_D = 3.1                       # diamètre du téton du support
-SSD_TETON_JEU = 0.25    # jeu radial autour du téton
-SSD_TETON_PROF = 0.5    # le téton arrive au ras du SSD : logement peu profond, par sécurité
-SSD_CALE_DECALAGE = 0.0 # décale la cale vers l'intérieur du SSD (mm, vers X décroissant) ;
-                        # avec >= 4,5, cale pleine posée à côté de l'encoche, sans logement
-SSD_X0 = SSD_CALE_X - SSD_LONG   # pour la maquette (bout du SSD au centre de la cale)
+# Vis de fixation du SSD, au bout du SSD, sur le support de la carte : point le plus
+# éloigné du support à 87,6 mm du petit côté sans USB et à 33,4 mm du bord 40 broches.
+SSD_SUPPORT_R = 2.5                     # rayon extérieur du support sur la carte (estimé)
+SSD_VIS_X = 87.6 - SSD_SUPPORT_R        # centre de la vis en X
+SSD_VIS_Y = 33.4 - SSD_SUPPORT_R        # centre de la vis en Y
+SSD_VIS_SOUS = 9.0                      # la vis dépasse de 9 mm sous la carte (mesuré)
+SSD_VIS_TETE_D = 6.0                    # diamètre de la tête de vis
+SSD_VIS_JEU = 1.0                       # jeu autour et sous la tête (logement dans le fond)
+SSD_X0 = SSD_VIS_X - SSD_LONG    # pour la maquette (bout du SSD au centre de la vis)
 
 # Trous de fixation : Ø 3,0, entraxes 58 (X) x 49 (Y), centres à 7,5 mm du petit
 # côté sans USB et à 3,25 mm du bord 40 broches (mesuré et confirmé).
@@ -240,15 +229,10 @@ def construire_socle():
     # Dégagement du micro (angle X=0 / Y=55,7)
     mx, my = MIC_D / 2 - MIC_DEPASSE, CARTE_W - MIC_D / 2 + MIC_DEPASSE
     s = s.cut(cyl_z(mx, my, MIC_D + 2 * JEU, CARTE_EP - 0.01, SPLIT + 1))
-    # Cale du SSD : plot sous le bout du SSD, à l'endroit de la vis M.2
-    if SSD_CALE:
-        z0, z1 = Z_PLANCHER - 0.01, -(SSD_APPUI + SSD_EP_PCB)
-        cx = SSD_CALE_X - SSD_CALE_DECALAGE
-        s = s.fuse(Part.makeCone(SSD_CALE_BASE_D / 2, SSD_CALE_D / 2, z1 - z0,
-                                 V(cx, SSD_CALE_Y, z0), V(0, 0, 1)))
-        logement = SSD_TETON_D / 2 + SSD_TETON_JEU
-        if SSD_CALE_DECALAGE < SSD_CALE_D / 2 + logement:
-            s = s.cut(cyl_z(SSD_CALE_X, SSD_CALE_Y, 2 * logement, z1 - SSD_TETON_PROF, z1 + 0.1))
+    # Logement de la tête de la vis du SSD, creusé dans le fond (elle descend sous le plancher)
+    z_vis = -(SSD_VIS_SOUS + SSD_VIS_JEU)
+    if z_vis < Z_PLANCHER:
+        s = s.cut(cyl_z(SSD_VIS_X, SSD_VIS_Y, SSD_VIS_TETE_D + 2 * SSD_VIS_JEU, z_vis, Z_PLANCHER + 0.1))
     # Plots de la carte
     plots = union([cyl_z(x, y, PLOT_D, Z_PLANCHER - 0.01, 0) for x, y in TROUS])
     s = s.fuse(plots)
@@ -351,7 +335,8 @@ def construire_maquette():
                CARTE_EP, CARTE_EP + RJ45_H),
          boite(FAN_X - FAN / 2, FAN_X + FAN / 2, FAN_Y - FAN / 2, FAN_Y + FAN / 2, Z_FAN_BAS, Z_PLAFOND_INT),
          cyl_z(MIC_D / 2 - MIC_DEPASSE, CARTE_W - MIC_D / 2 + MIC_DEPASSE, MIC_D, CARTE_EP, CARTE_EP + 1.5),
-         boite(-3, 12, SD_Y0, SD_Y1, -SD_SOUS, 0)]
+         boite(-3, 12, SD_Y0, SD_Y1, -SD_SOUS, 0),
+         cyl_z(SSD_VIS_X, SSD_VIS_Y, SSD_VIS_TETE_D, -SSD_VIS_SOUS, 0)]
     for nom, x0, x1, h, dep, _, forme in PRISES_Y:
         m.append(boite(x0, x1, CARTE_W - 10, CARTE_W - 1, CARTE_EP, h))
         m.append(ouverture_y(forme, x0, x1, CARTE_EP, h, CARTE_W - 1.01, CARTE_W + dep))

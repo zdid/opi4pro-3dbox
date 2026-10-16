@@ -13,7 +13,7 @@ Relancer la macro (FreeCAD > Macro > Macros… > Exécuter) régénère les troi
 
 ## Ce que fait la v1
 
-- **Cale du SSD** : un plot conique (Ø 8 à la base, Ø 6 au contact, surface de la tête de vis) sous le bout du SSD, au droit du support de vis M.2 (bord du contact à 87,6 mm du petit côté sans USB et à 33,4 mm du côté 40 broches), le maintient quand il n'est pas vissé (`SSD_CALE`). Elle a un léger creux (0,5 mm) au droit du téton du support (Ø 3,1), qui arrive au ras du SSD. `SSD_CALE_DECALAGE` permet de la déplacer vers l'intérieur du SSD en cale pleine.
+- **Vis du SSD** : le SSD est vissé sur le support de la carte ; la vis dépasse de 9 mm sous la carte, plus bas que le plancher du socle (7,5 mm). Un logement de Ø 8 mm, 10 mm sous la carte, est creusé dans le fond à cet endroit (`SSD_VIS_*`).
 - **Socle** : la carte s'encastre dedans (jeu 0,5 mm) et se visse sur 4 plots. Les plots laissent 3 mm d'air sous le SSD. Ouvertures pour les prises, la microSD avec un creux pour la saisir, et le micro. Un poussoir à languette souple pour le bouton POWER. Un double fond avec un trou de serrure pour accrocher le boîtier à une vis.
 - **Côté HDMI** : ouvertures à la forme des prises : USB-C oblongue (bouts arrondis), HDMI rectangle aux coins du bas coupés, jack audio rond ; lamages autour pour les fiches.
 - **Côté USB / RJ45** : une fenêtre par prise, séparées par des pattes (2,5 mm entre les deux USB, 3 mm entre USB et RJ45).
@@ -53,10 +53,6 @@ Pour les modifier :
 | `FENTES_HAUTES` | `False` | Sorties d'air au-dessus de la carte (petit côté sans USB), à comparer aux essais |
 | `TROU_SERRURE` | `True` | Accroche murale sur une vis (double fond) |
 | `OREILLES` | `False` | Pattes de fixation murale de chaque côté |
-| `SSD_CALE` | `True` | Plot qui cale le bout du SSD quand il n'est pas vissé |
-| `SSD_EP_PCB` | 0,8 | Hauteur de la cale : augmenter si elle serre trop, diminuer si elle ne touche pas |
-| `SSD_CALE_DECALAGE` | 0 | Déplace la cale vers l'intérieur du SSD ; à partir de 4,5 elle devient pleine, sans logement |
-| `SSD_TETON_PROF` | 0,5 | Profondeur du creux au droit du téton du support |
 | `JEU` | 0,5 | Jeu entre la carte et les parois (augmenter si la carte force) |
 | `PAROI` | 2,0 | Épaisseur des parois |
 | `PLOT_AVANT_TROU` | 2,2 | Avant-trou des vis M2,5 de la carte |
@@ -66,6 +62,7 @@ Pour les modifier :
 | `FAN_JEU_USB` | 1,0 | Jeu entre le sommet des prises USB et le ventilateur |
 | `JEU_AIR`, `COULOIR_X` | 3 ; 12-62 | Largeur et longueur du couloir d'air qui descend vers le SSD |
 | `AIR_SOUS_SSD` | 3,0 | Espace d'air sous le SSD |
+| `SSD_VIS_SOUS`, `SSD_VIS_TETE_D`, `SSD_VIS_JEU` | 9 ; 6 ; 1 | Dépassement de la vis du SSD sous la carte, diamètre de sa tête, jeu du logement creusé dans le fond |
 | `MINI_PAROI` | 0,8 | Épaisseur minimale laissée par les lamages des fiches |
 | `JEU_OUVERTURE` | 0,3 | Jeu autour des prises USB-C, HDMI et audio |
 | `HDMI_CHANFREIN` | 1,5 | Taille des coins coupés de l'ouverture HDMI |
@@ -85,4 +82,5 @@ Pour les modifier :
 
 | Paramètre | Valeur supposée | Quoi mesurer |
 |---|---|---|
-| `SSD_EP_PCB` | 0,8 mm (non mesurable, valeur courante) | Si la cale serre trop ou ne touche pas le SSD, ajuster cette valeur |
+| `SSD_VIS_TETE_D` | 6 mm | Diamètre de la tête de la vis du SSD (le logement fait ce diamètre + 2 mm) |
+| `SSD_SUPPORT_R` | 2,5 mm | Rayon du support de vis sur la carte : sert à placer le centre de la vis à partir des cotes du point le plus éloigné |
