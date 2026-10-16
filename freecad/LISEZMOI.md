@@ -67,6 +67,24 @@ Valeurs courantes à ajuster : les plages indiquées sur la bobine font foi. Fai
 
 **Si ça file** : baisser la buse de 5 °C, augmenter la rétraction de 0,5 mm, vérifier que le filament est sec.
 
+### Tour de température (à faire avant le boîtier)
+
+Petite pièce de test haute et étroite, imprimée en plusieurs étages avec une température de buse différente à chaque étage (par exemple 245, 240, 235, 230, 225 °C). Elle sert à trouver la meilleure température pour ce filament sur cette imprimante.
+
+Sur chaque étage, regarder :
+- les **fils** entre les éléments : trop chaud, ça file ;
+- les **surplombs et petits ponts** : trop chaud, ils s'affaissent ;
+- l'**aspect des parois** : lisse et régulier ;
+- la **solidité** : trop froid, les couches se séparent (essayer de casser la tour à la main).
+
+Retenir l'étage le plus propre qui reste solide, et reporter cette température dans le profil Cura du boîtier.
+
+Avec Cura (noms de menus non vérifiés, ils peuvent varier selon la version) :
+1. Installer l'extension **« Calibration Shapes »** depuis le Marketplace, puis redémarrer Cura.
+2. **Extensions → Part for calibration → Add a PETG TempTower**.
+3. Pour que la température change vraiment à chaque étage : **Extensions → Post-traitement → Modifier le G-code → Ajouter un script → TempFanTower**. Régler la température de départ (par exemple 245 °C), le pas (-5 °C) et la hauteur d'un étage (en général 10 mm, celle de la tour).
+4. Trancher et imprimer (environ 30 à 45 min).
+
 ## Variables d'ajustement
 
 Toutes les variables sont **en tête du fichier `boitier_opi4pro.FCMacro`**, chacune avec son commentaire. Ce n'est pas un fichier FreeCAD « paramétrique » : le `.FCStd` et les STL ne contiennent que les formes, les paramètres sont uniquement dans la macro.
